@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.font-handwriting {
+  font-family: var(--font-pangolin), cursive;
+}
+
+/* Dropdown menu animation */
+@keyframes dropIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(5px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Enhance hover effect for menu items */
+#mobile-menu a {
+  position: relative;
+  overflow: hidden;
+}
+
+#mobile-menu a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #047857, #d97706);
+  transition: width 0.3s ease;
+}
+
+#mobile-menu a:hover::after {
+  width: 100%;
+}
+
+/* Ghibli Loader Animations */
+@keyframes bounce-gentle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+@keyframes color-shift {
+  0% {
+    color: #047857;
+  }
+  50% {
+    color: #059669;
+  }
+  100% {
+    color: #065f46;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 3s infinite ease-in-out;
+}
+
+.animate-bounce-delayed-1 {
+  animation: bounce 1.5s infinite;
+  animation-delay: 0ms;
+}
+
+.animate-bounce-delayed-2 {
+  animation: bounce 1.5s infinite;
+  animation-delay: 150ms;
+}
+
+.animate-bounce-delayed-3 {
+  animation: bounce 1.5s infinite;
+  animation-delay: 300ms;
+}
