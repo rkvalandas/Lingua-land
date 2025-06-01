@@ -13,7 +13,22 @@ export default function LanguagesSection() {
     "Italian",
     "Portuguese",
     "Russian",
-    "Chinese",
+    "Chinese (Mandarin)",
+    "Korean",
+    "Hindi",
+    "Arabic",
+    "Dutch",
+    "Polish",
+    "Swedish",
+    "Turkish",
+    "Vietnamese",
+    "Thai",
+    "Indonesian",
+    "Bengali",
+    "Tamil",
+    "Swahili",
+    "Hebrew",
+    "Persian",
   ];
 
   // Create staggered animation delays
@@ -35,7 +50,7 @@ export default function LanguagesSection() {
           className="text-2xl sm:text-3xl md:text-4xl font-handwriting text-center text-emerald-800 dark:text-emerald-200 mb-8 sm:mb-12"
           style={{ textShadow: "1px 1px 0 rgba(0,50,0,0.1)" }}
         >
-          Discover New Worlds Through Language
+          Master 75+ Languages from Around the World
         </h2>
       </ScrollAnimation>
 
