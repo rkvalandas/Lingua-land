@@ -1,28 +1,64 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@import "highlight.js/styles/github.css";
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  /* Smooth scrolling optimization */
+  scroll-behavior: smooth;
+  /* Prevent blue highlight/selection color on scroll */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Hardware acceleration for better performance */
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /* Prevent blue overlay during scroll and improve scrolling performance */
+  overscroll-behavior: none;
+  -webkit-overscroll-behavior: none;
+}
+
+/* Re-enable text selection for specific elements */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+div[contenteditable],
+input,
+textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Smooth scrolling for all scrollable elements */
+html {
+  scroll-behavior: smooth;
+  /* Remove default browser scroll effects */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optimize scrolling performance */
+* {
+  /* Prevent blue highlight during touch/scroll */
+  -webkit-tap-highlight-color: transparent;
+  /* Optimize rendering */
+  box-sizing: border-box;
+}
+
+/* Fix scroll momentum on iOS */
+body,
+html {
+  height: 100%;
+  overflow-x: hidden;
 }
 
 .font-handwriting {
@@ -111,21 +147,33 @@ body {
   }
 }
 
-.animate-bounce-gentle {
-  animation: bounce-gentle 3s infinite ease-in-out;
+@keyframes paperFloat {
+  0%,
+  100% {
+    background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+  25% {
+    background-position: 20% 10%, 40% 20%, 60% 30%, 0% 0%;
+  }
+  50% {
+    background-position: 40% 20%, 80% 40%, 20% 60%, 0% 0%;
+  }
+  75% {
+    background-position: 60% 30%, 20% 60%, 80% 40%, 0% 0%;
+  }
 }
 
-.animate-bounce-delayed-1 {
-  animation: bounce 1.5s infinite;
-  animation-delay: 0ms;
-}
+/* Additional scroll and performance optimizations */
 
-.animate-bounce-delayed-2 {
-  animation: bounce 1.5s infinite;
-  animation-delay: 150ms;
-}
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 
-.animate-bounce-delayed-3 {
-  animation: bounce 1.5s infinite;
-  animation-delay: 300ms;
+  html {
+    scroll-behavior: auto;
+  }
 }

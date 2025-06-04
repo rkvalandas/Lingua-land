@@ -189,16 +189,12 @@ export function ClientNavigation({ logo }: { logo: string }) {
   );
 }
 
-export function ClientParticleBackground({
-  backgroundImage,
-}: {
-  backgroundImage: string;
-}) {
+export function ClientParticleBackground() {
   return (
     <Suspense
       fallback={<div className="absolute inset-0 bg-amber-50/80"></div>}
     >
-      <ParticleBackground backgroundImage={backgroundImage} />
+      <ParticleBackground />
     </Suspense>
   );
 }

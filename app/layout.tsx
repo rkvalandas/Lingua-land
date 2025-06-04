@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Pangolin } from "next/font/google";
 import "./globals.css";
 import { LoadingProvider } from "./contexts/LoadingContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import PageLoader from "./components/PageLoader";
 import { metadata } from "./metadata"; // Import our custom metadata
 
@@ -39,10 +40,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${unkemptFont.variable} antialiased`}
       >
-        <LoadingProvider>
-          <PageLoader />
-          {children}
-        </LoadingProvider>
+        <AuthProvider>
+          <LoadingProvider>
+            <PageLoader />
+            {children}
+          </LoadingProvider>
+        </AuthProvider>
       </body>
     </html>
   );

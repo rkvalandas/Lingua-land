@@ -8,17 +8,17 @@ interface MessageBubbleProps {
 export default function MessageBubble({ message, playMessageAudio }: MessageBubbleProps) {
   return (
     <div
-      className={`mb-5 p-4 ${
+      className={`mb-3 sm:mb-5 p-3 sm:p-4 ${
         message.type === "user"
-          ? "bg-teal-50/80 dark:bg-orange-800/40 border-2 border-amber-300 dark:border-yellow-500 ml-12 rounded-tr-3xl rounded-bl-3xl rounded-tl-xl rounded-br-xl transform rotate-[0.3deg]"
-          : "bg-amber-50/80 dark:bg-amber-900/40 border-2 border-amber-300 dark:border-yellow-500 mr-12 rounded-tl-3xl rounded-br-3xl rounded-tr-xl rounded-bl-xl transform rotate-[-0.3deg]"
+          ? "bg-teal-50/80 dark:bg-orange-800/40 border-2 border-amber-300 dark:border-yellow-500 ml-4 sm:ml-12 rounded-tr-2xl sm:rounded-tr-3xl rounded-bl-2xl sm:rounded-bl-3xl rounded-tl-xl rounded-br-xl transform rotate-[0.3deg]"
+          : "bg-amber-50/80 dark:bg-amber-900/40 border-2 border-amber-300 dark:border-yellow-500 mr-4 sm:mr-12 rounded-tl-2xl sm:rounded-tl-3xl rounded-br-2xl sm:rounded-br-3xl rounded-tr-xl rounded-bl-xl transform rotate-[-0.3deg]"
       }`}
       style={{ boxShadow: "2px 2px 0 rgba(0, 0, 0, 0.05)" }}
     >
-      <p className="font-handwriting font-semibold mb-2 text-emerald-800 dark:text-emerald-200">
+      <p className="font-handwriting font-semibold mb-1 sm:mb-2 text-emerald-800 dark:text-emerald-200 text-sm sm:text-base">
         {message.type === "user" ? "You" : "Spirit Guide"}
       </p>
-      <p className="font-handwriting text-emerald-700 dark:text-emerald-100">
+      <p className="font-handwriting text-emerald-700 dark:text-emerald-100 text-sm sm:text-base leading-relaxed break-words">
         {message.text}
       </p>
       {message.type === "ai" && message.audio && (

@@ -1,8 +1,8 @@
-"use client"; // Add this directive at the top
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
-import ScrollAnimation from "./ScrollAnimation";
+import MotionWrapper from "./MotionWrapper";
 
 interface HeroSectionProps {
   characterImage: string;
@@ -12,58 +12,70 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
   return (
     <div className="relative mt-4 sm:mt-8 w-full flex flex-col md:flex-row items-center gap-6 md:gap-16">
       <div className="w-full md:w-1/2 space-y-4 sm:space-y-6 transform rotate-[-0.3deg] text-center md:text-left">
-        <ScrollAnimation animationType="fade-in" delay={100}>
+        <MotionWrapper animationType="fade-in" delay={100}>
           <h1
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-handwriting leading-tight text-emerald-900 dark:text-emerald-200 mx-auto md:mx-0"
             style={{ textShadow: "1px 1px 0 rgba(0,50,0,0.1)" }}
           >
-            <ScrollAnimation animationType="slide-in-left" delay={300}>
+            <MotionWrapper animationType="slide-in-left" delay={300}>
               <span className="block text-teal-700 dark:text-teal-200 transform rotate-[-0.5deg]">
                 Begin Your
               </span>
-            </ScrollAnimation>
-            <ScrollAnimation animationType="slide-in-right" delay={500}>
+            </MotionWrapper>
+            <MotionWrapper animationType="slide-in-right" delay={500}>
               <span className="block text-lime-700 dark:text-lime-200 transform rotate-[0.5deg]">
                 Magical Language
               </span>
-            </ScrollAnimation>
-            <ScrollAnimation animationType="slide-in-left" delay={700}>
+            </MotionWrapper>
+            <MotionWrapper animationType="slide-in-left" delay={700}>
               <span className="block text-teal-700 dark:text-teal-200 transform rotate-[-0.2deg]">
                 Journey
               </span>
-            </ScrollAnimation>
+            </MotionWrapper>
           </h1>
-        </ScrollAnimation>
+        </MotionWrapper>
 
-        <ScrollAnimation animationType="fade-up" delay={900}>
+        <MotionWrapper animationType="fade-up" delay={900}>
           <p className="text-base sm:text-lg md:text-xl text-emerald-800 dark:text-emerald-50 font-handwriting">
             Immerse yourself in a world where language learning feels like a
             Studio Ghibli adventure. Our AI companion guides you through
-            conversations that adapt to your skill level.
+            conversations that adapt to your skill level, while our powerful
+            services help you master grammar, translation, and more.
           </p>
-        </ScrollAnimation>
+        </MotionWrapper>
 
-        <ScrollAnimation animationType="scale-in" delay={1100}>
-          <div className="flex justify-center md:justify-start">
+        <MotionWrapper animationType="scale-in" delay={1100}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <Link
-              href="/practice"
-              className="inline-block mt-4 px-6 sm:px-8 py-3 sm:py-4 bg-amber-100 dark:bg-yellow-700 text-amber-800 dark:text-white text-base sm:text-lg transform hover:scale-105 transition-all"
+              href="/services"
+              className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-amber-100 dark:bg-yellow-700 text-amber-800 dark:text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all"
               style={{
-                borderRadius: "15px",
+                borderRadius: "15px 5px 10px 20px",
                 border: "2px solid #f59e0b",
-                boxShadow: "2px 3px 0 rgba(146, 64, 14, 0.2)",
+                filter: "url(#paper-filter)",
+                boxShadow: "4px 4px 8px rgba(0,0,0,0.1)",
               }}
             >
-              <span className="relative z-10 font-handwriting">
-                Get Started
-              </span>
+              Start Your Journey
+            </Link>
+            <Link
+              href="/services"
+              className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all"
+              style={{
+                borderRadius: "20px 10px 5px 15px",
+                border: "2px solid #10b981",
+                filter: "url(#paper-filter)",
+                boxShadow: "4px 4px 8px rgba(0,0,0,0.1)",
+              }}
+            >
+              Explore Services
             </Link>
           </div>
-        </ScrollAnimation>
+        </MotionWrapper>
       </div>
 
       <div className="w-full sm:w-2/3 md:w-1/2 relative transform rotate-[1deg] flex items-center justify-center mt-8 md:mt-0">
-        <ScrollAnimation animationType="fade-in" delay={300}>
+        <MotionWrapper animationType="fade-in" delay={300}>
           <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md aspect-square mx-auto">
             <div
               className="absolute inset-0 rounded-full"
@@ -99,7 +111,7 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
               }}
             />
           </div>
-        </ScrollAnimation>
+        </MotionWrapper>
       </div>
     </div>
   );

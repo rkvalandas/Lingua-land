@@ -1,21 +1,21 @@
 "use client";
 
-import ScrollAnimation from "./ScrollAnimation";
+import MotionWrapper from "./MotionWrapper";
 
 export default function FeaturesSection() {
   return (
     <div id="how-it-works" className="w-full mt-20 sm:mt-32 mb-12 sm:mb-16">
-      <ScrollAnimation animationType="fade-up">
+      <MotionWrapper animationType="fade-up">
         <h2
           className="text-2xl sm:text-3xl md:text-4xl font-handwriting text-center text-emerald-800 dark:text-emerald-200 mb-8 sm:mb-12 transform rotate-[0.5deg]"
           style={{ textShadow: "1px 1px 0 rgba(0,50,0,0.1)" }}
         >
           How The Magic Works
         </h2>
-      </ScrollAnimation>
+      </MotionWrapper>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12">
-        <ScrollAnimation animationType="fade-up" delay={150}>
+        <MotionWrapper animationType="fade-up" delay={150}>
           <div
             className="bg-yellow-200 dark:bg-yellow-700 bg-opacity-70 dark:bg-opacity-40 rounded-2xl p-5 sm:p-6 backdrop-blur-sm transform transition-all hover:scale-105 border-2 border-amber-400 dark:border-amber-500 h-full flex flex-col"
             style={{
@@ -52,9 +52,9 @@ export default function FeaturesSection() {
               </p>
             </div>
           </div>
-        </ScrollAnimation>
+        </MotionWrapper>
 
-        <ScrollAnimation animationType="fade-up" delay={300}>
+        <MotionWrapper animationType="fade-up" delay={300}>
           <div
             className="bg-yellow-200 dark:bg-yellow-700 bg-opacity-70 dark:bg-opacity-40 rounded-2xl p-5 sm:p-6 backdrop-blur-sm transform transition-all hover:scale-105 border-2 border-amber-400 dark:border-amber-500 h-full flex flex-col"
             style={{
@@ -91,9 +91,9 @@ export default function FeaturesSection() {
               </p>
             </div>
           </div>
-        </ScrollAnimation>
+        </MotionWrapper>
 
-        <ScrollAnimation animationType="fade-up" delay={450}>
+        <MotionWrapper animationType="fade-up" delay={450}>
           <div
             className="bg-yellow-200 dark:bg-yellow-700 bg-opacity-70 dark:bg-opacity-40 rounded-2xl p-5 sm:p-6 backdrop-blur-sm transform transition-all hover:scale-105 border-2 border-amber-400 dark:border-amber-500 sm:col-span-2 md:col-span-1 sm:max-w-md sm:mx-auto md:max-w-none h-full flex flex-col"
             style={{
@@ -130,7 +130,7 @@ export default function FeaturesSection() {
               </p>
             </div>
           </div>
-        </ScrollAnimation>
+        </MotionWrapper>
       </div>
     </div>
   );

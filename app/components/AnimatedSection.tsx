@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import ScrollAnimation from "./ScrollAnimation";
+import MotionSection from "./MotionSection";
 
 interface AnimatedSectionProps {
   children: ReactNode;
@@ -23,9 +23,9 @@ export default function AnimatedSection({
   if (!staggered) {
     return (
       <div id={id}>
-        <ScrollAnimation className={className}>
+        <MotionSection className={className}>
           <div className={childrenClassName}>{children}</div>
-        </ScrollAnimation>
+        </MotionSection>
       </div>
     );
   }
@@ -34,16 +34,16 @@ export default function AnimatedSection({
   const childrenArray = Array.isArray(children) ? children : [children];
 
   return (
-    <div className={className} id={id}>
+    <MotionSection
+      className={className}
+      id={id}
+      staggered={true}
+      staggerDelay={staggerDelay}
+      childrenClassName={childrenClassName}
+    >
       {childrenArray.map((child, index) => (
-        <ScrollAnimation
-          key={index}
-          delay={index * staggerDelay}
-          className={childrenClassName}
-        >
-          {child}
-        </ScrollAnimation>
+        <div key={index}>{child}</div>
       ))}
-    </div>
+    </MotionSection>
   );
 }

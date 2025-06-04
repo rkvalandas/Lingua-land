@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import StructuredData from "./components/StructuredData";
 import HeroSection from "./components/HeroSection";
 import FeaturesSection from "./components/FeaturesSection";
+import ServicesSection from "./components/ServicesSection";
 import LanguagesSection from "./components/LanguagesSection";
 import CtaSection from "./components/CtaSection";
 import Footer from "./components/Footer";
@@ -18,7 +19,6 @@ import {
 
 // Image paths
 const characterIllustration = "/character-illustration.png";
-const background = "/background.png";
 const logo = "/icon.png";
 
 export default function Home() {
@@ -27,8 +27,8 @@ export default function Home() {
       {/* Structured Data for SEO */}
       <StructuredData />
 
-      {/* Background with particles - Now using the client component */}
-      <ClientParticleBackground backgroundImage={background} />
+      {/* Background with particles and paper texture */}
+      <ClientParticleBackground />
 
       {/* Content container */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12 flex flex-col items-center min-h-screen">
@@ -45,6 +45,11 @@ export default function Home() {
           {/* Features Section with staggered animation */}
           <AnimatedSection>
             <FeaturesSection />
+          </AnimatedSection>
+
+          {/* Services Section with slide-in animation */}
+          <AnimatedSection>
+            <ServicesSection />
           </AnimatedSection>
 
           {/* Languages Section with slide-in animation */}

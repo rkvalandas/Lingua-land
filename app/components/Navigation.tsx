@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "../contexts/AuthContext";
+import AuthModal from "./AuthModal";
 
 interface NavigationProps {
   logo: string;
@@ -10,12 +12,13 @@ interface NavigationProps {
 
 export default function Navigation({ logo }: NavigationProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   return (
     <>
       <nav
-        className="w-full h-16 flex justify-between items-center mb-8 sm:mb-16 pr-6 border-2 border-yellow-50 dark:border-yellow-600 bg-white/30 dark:bg-yellow-900 rounded-2xl"
-        style={{ filter: "url(#paper-filter)" }}
+        className="w-full h-16 flex justify-between items-center mb-8 sm:mb-16 pr-6 border-2 border-yellow-50 dark:border-yellow-600 bg-white/30 dark:bg-yellow-900 rounded-2xl shadow-md"
         aria-label="Main navigation"
       >
         <div className="flex items-center transform rotate-[-0.5deg]">
@@ -55,14 +58,12 @@ export default function Navigation({ logo }: NavigationProps) {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d={
-                menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"
-              }
+              d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
             />
           </svg>
         </button>
 
-        <div className="hidden md:flex gap-8 text-emerald-800 dark:text-yellow-200 font-handwriting">
+        <div className="hidden md:flex gap-8 items-center text-emerald-800 dark:text-yellow-200 font-handwriting">
           <a
             href="#about"
             className="hover:text-amber-600 dark:hover:text-amber-300 transition-colors transform rotate-[-1deg]"
@@ -81,11 +82,44 @@ export default function Navigation({ logo }: NavigationProps) {
           >
             Languages
           </a>
+
+          {user ? (
+            <div className="flex items-center gap-4">
+              <Link
+                href="/services"
+                className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors text-sm"
+              >
+                Services
+              </Link>
+              <span className="text-sm">Welcome, {user.username}!</span>
+              <button
+                onClick={logout}
+                className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors text-sm"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/signin"
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors transform rotate-[0.5deg]"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/signup"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md transition-colors transform rotate-[-0.5deg]"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
 
       {menuOpen && (
-        <div 
+        <div
           id="mobile-menu"
           className="md:hidden fixed inset-0 bg-amber-50/95 dark:bg-indigo-900/95 z-50 flex flex-col items-center justify-center"
           role="dialog"
@@ -133,9 +167,53 @@ export default function Navigation({ logo }: NavigationProps) {
             >
               Languages
             </a>
+
+            {user ? (
+              <div className="flex flex-col items-center gap-4">
+                <Link
+                  href="/services"
+                  onClick={() => setMenuOpen(false)}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors"
+                >
+                  Services
+                </Link>
+                <span className="text-lg">Welcome, {user.username}!</span>
+                <button
+                  onClick={() => {
+                    logout();
+                    setMenuOpen(false);
+                  }}
+                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-4">
+                <Link
+                  href="/signin"
+                  onClick={() => setMenuOpen(false)}
+                  className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/signup"
+                  onClick={() => setMenuOpen(false)}
+                  className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-md transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}
+
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+      />
     </>
   );
 }

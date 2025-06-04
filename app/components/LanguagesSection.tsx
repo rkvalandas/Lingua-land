@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ScrollAnimation from "./ScrollAnimation";
+import MotionWrapper from "./MotionWrapper";
 
 export default function LanguagesSection() {
   const languages = [
@@ -45,18 +45,18 @@ export default function LanguagesSection() {
 
   return (
     <div id="languages" className="w-full mt-16 sm:mt-24 mb-3 sm:mb-6">
-      <ScrollAnimation animationType="fade-up">
+      <MotionWrapper animationType="fade-up">
         <h2
           className="text-2xl sm:text-3xl md:text-4xl font-handwriting text-center text-emerald-800 dark:text-emerald-200 mb-8 sm:mb-12"
           style={{ textShadow: "1px 1px 0 rgba(0,50,0,0.1)" }}
         >
           Master 75+ Languages from Around the World
         </h2>
-      </ScrollAnimation>
+      </MotionWrapper>
 
       <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-3xl mx-auto">
         {languages.map((language, index) => (
-          <ScrollAnimation
+          <MotionWrapper
             key={language}
             animationType={getAnimationType(index)}
             delay={getDelay(index)}
@@ -70,9 +70,9 @@ export default function LanguagesSection() {
             >
               {language}
             </div>
-          </ScrollAnimation>
+          </MotionWrapper>
         ))}
-        <ScrollAnimation
+        <MotionWrapper
           animationType="scale-in"
           delay={getDelay(languages.length)}
         >
@@ -85,7 +85,7 @@ export default function LanguagesSection() {
           >
             And more...
           </div>
-        </ScrollAnimation>
+        </MotionWrapper>
       </div>
     </div>
   );

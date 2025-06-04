@@ -1,7 +1,16 @@
 import { useState, useRef, useEffect, useReducer } from "react";
-import { AppState, AIMessage, ConversationMessage, ConversationResponse } from "../types";
+import {
+  AppState,
+  AIMessage,
+  ConversationMessage,
+  ConversationResponse,
+} from "../types";
 import { appReducer } from "./appReducer";
-import { getSpeechRecognitionLang, getVoiceForLanguage } from "../utils/languageUtils";
+import {
+  getSpeechRecognitionLang,
+  getVoiceForLanguage,
+} from "../utils/languageUtils";
+import { useAuth } from "../../contexts/AuthContext";
 
 // Add SpeechRecognition type definitions
 interface SpeechRecognitionEvent extends Event {
@@ -45,7 +54,10 @@ declare global {
 }
 
 export function useConversationState(selectedLanguage: string) {
-  const [conversation, setConversation] = useState<(ConversationMessage | AIMessage)[]>([]);
+  const [conversation, setConversation] = useState<
+    (ConversationMessage | AIMessage)[]
+  >([]);
+  const { token } = useAuth();
 
   // Use reducer for related state
   const [state, dispatch] = useReducer(appReducer, {
@@ -154,7 +166,12 @@ export function useConversationState(selectedLanguage: string) {
         }
       }
     };
-  }, [selectedLanguage, state.autoListen, state.isProcessing, state.isSpeaking]);
+  }, [
+    selectedLanguage,
+    state.autoListen,
+    state.isProcessing,
+    state.isSpeaking,
+  ]);
 
   // Auto-listen effect
   useEffect(() => {
@@ -187,7 +204,12 @@ export function useConversationState(selectedLanguage: string) {
 
       return () => clearTimeout(timer);
     }
-  }, [state.autoListen, state.isListening, state.isProcessing, state.isSpeaking]);
+  }, [
+    state.autoListen,
+    state.isListening,
+    state.isProcessing,
+    state.isSpeaking,
+  ]);
 
   // Update recognition language when language changes
   useEffect(() => {
@@ -294,34 +316,64 @@ export function useConversationState(selectedLanguage: string) {
     selectedLanguage,
   ]);
 
-  // Start new conversation when language changes
+  // Load existing conversation when language or token changes
   useEffect(() => {
-    async function startNewConversation() {
+    if (!token) return;
+
+    async function loadExistingConversation() {
       try {
+        const API_BASE_URL =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
         const response = await fetch(
-          "http://localhost:8000/api/conversations",
+          `${API_BASE_URL}/api/conversation?language=${encodeURIComponent(
+            selectedLanguage
+          )}`,
           {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              userId: 1,
-              language: selectedLanguage,
-            }),
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
+        if (!response.ok) {
+          console.log(`No existing conversation found for ${selectedLanguage}`);
+          conversationIdRef.current = null;
+          setConversation([]);
+          return;
+        }
 
         const data = await response.json();
-        conversationIdRef.current = data.conversationId;
-        setConversation([]); // Clear conversation
+
+        if (data.conversation && data.messages && data.messages.length > 0) {
+          conversationIdRef.current = data.conversation.id;
+
+          // Convert database messages to conversation format
+          const conversationMessages = data.messages.map((msg: any) => ({
+            type: msg.is_user ? "user" : "ai",
+            text: msg.content,
+            ...(msg.is_user ? {} : { audio: undefined }), // AI messages won't have audio from DB
+          }));
+
+          setConversation(conversationMessages);
+          console.log(
+            `Loaded ${data.messages.length} messages from existing ${selectedLanguage} conversation`
+          );
+        } else {
+          // No existing conversation or messages for this language
+          conversationIdRef.current = null;
+          setConversation([]);
+          console.log(`No messages found for ${selectedLanguage} conversation`);
+        }
       } catch (error) {
-        console.error("Failed to start conversation:", error);
+        console.error("Failed to load existing conversation:", error);
+        conversationIdRef.current = null;
+        setConversation([]);
       }
     }
 
-    startNewConversation();
-  }, [selectedLanguage]);
+    loadExistingConversation();
+  }, [token, selectedLanguage]); // Run when token or language changes
 
   // Cleanup object URLs
   useEffect(() => {
@@ -348,21 +400,24 @@ export function useConversationState(selectedLanguage: string) {
 
   // Process transcript and get AI response
   const processTranscript = async (text: string): Promise<void> => {
-    if (!text.trim()) return;
+    if (!text.trim() || !token) return;
 
     try {
       dispatch({ type: "START_PROCESSING" });
 
       // 1. Get AI response
+      const API_BASE_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const conversationResponse = await fetch(
-        "http://localhost:8000/api/conversation",
+        `${API_BASE_URL}/api/conversation`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             text,
-            userId: 1,
-            conversationId: conversationIdRef.current,
             language: selectedLanguage,
           }),
         }
@@ -384,9 +439,12 @@ export function useConversationState(selectedLanguage: string) {
       try {
         console.log("Requesting TTS for AI response");
 
-        const ttsResponse = await fetch("http://localhost:8000/api/tts", {
+        const ttsResponse = await fetch(`${API_BASE_URL}/api/tts`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             text: data.aiResponse,
             voice: getVoiceForLanguage(selectedLanguage),
@@ -543,6 +601,6 @@ export function useConversationState(selectedLanguage: string) {
     audioRef,
     processTranscript,
     toggleRecordingMode,
-    playMessageAudio
+    playMessageAudio,
   };
 }
