@@ -1,16 +1,19 @@
-# Magical Language Learning App 🌟
+# Lingua Land 🌟
 
-An immersive, AI-powered language learning application that makes practicing conversations feel like a Studio Ghibli adventure. This application combines voice recognition, AI conversation, and text-to-speech technologies to create an engaging and natural language learning experience across 75+ world languages.
+An AI-powered language learning application that combines voice recognition, AI conversation, and text-to-speech technologies to create a natural language learning experience across 75+ world languages.
 
 ## ✨ Features
 
 ### 🎯 Core Functionality
 
 - **Real-time Voice Conversation**: Practice speaking in 75+ languages with an AI companion
+- **Multiple AI Services**: Comprehensive language tools including conversation, grammar checking, translation, summarization, and paraphrasing
 - **Speech Recognition**: Advanced speech-to-text in multiple languages
 - **AI-Powered Responses**: Intelligent conversational AI that adapts to your language level
 - **Natural Text-to-Speech**: High-quality voice synthesis for AI responses
 - **Conversation Persistence**: All conversations are saved with audio replay functionality
+- **User Authentication**: Secure sign-in/sign-up with user settings and conversation history
+- **Mobile-Responsive Design**: Fully optimized for mobile devices with touch-friendly interfaces
 
 ### 🌍 Language Support
 
@@ -23,11 +26,11 @@ The app supports conversation practice in 75+ languages including:
 
 ### 🎨 User Experience
 
-- **Studio Ghibli-Inspired Design**: Magical, whimsical interface with hand-drawn aesthetics
 - **Responsive Design**: Optimized for desktop and mobile devices
-- **Dark/Light Mode**: Automatic theme switching based on system preferences
-- **Smooth Animations**: Engaging scroll animations and transitions
-- **Particle Background**: Animated particle effects for immersive experience
+- **Mobile Navigation**: Collapsible sidebar with hamburger menu
+- **Touch-Optimized Interactions**: Enhanced touch targets and gestures
+- **Cross-Platform Compatibility**: Works across modern browsers
+- **Progressive Web App Features**: Offline-ready capabilities
 
 ### 🔧 Technical Features
 
@@ -35,26 +38,34 @@ The app supports conversation practice in 75+ languages including:
 - **Interrupt Capability**: Stop AI speech by speaking over it
 - **Audio Replay**: Replay any AI message from conversation history
 - **Real-time Transcription**: See your speech converted to text in real-time
-- **Conversation Management**: Start new conversations by switching languages
+- **Conversation Management**: Create, edit, and delete conversation titles
+- **User Settings**: Persistent user preferences and language settings
+- **Mobile Touch Controls**: Enhanced touch interactions with `touch-manipulation` and active states
+- **Responsive Sidebar**: Collapsible sidebar with mobile overlay and hamburger menu
+- **Session Management**: Secure JWT-based authentication with refresh tokens
 
 ## 🏗️ Architecture
 
 ### Frontend (Next.js 15)
 
-- **Framework**: Next.js 15 with TypeScript
-- **Styling**: Tailwind CSS 4.0 with custom animations
-- **State Management**: React hooks with useReducer for complex state
-- **Voice Recognition**: Web Speech API
-- **Responsive Design**: Mobile-first approach
+- **Framework**: Next.js 15 with TypeScript and App Router
+- **Styling**: Tailwind CSS 4.0 with custom animations and responsive design
+- **State Management**: React hooks with useReducer for complex state management
+- **Authentication**: JWT-based authentication with AuthContext
+- **Voice Recognition**: Web Speech API with cross-browser support
+- **Responsive Design**: Mobile-first approach with touch-optimized interfaces
+- **Navigation**: Dynamic sidebar with mobile hamburger menu
+- **Services**: Multiple AI-powered language tools integrated in a unified interface
 
 ### Backend Integration
 
 The frontend communicates with an Express.js backend that provides:
 
-- **AI Conversation**: LangChain integration with Groq LLM
+- **User Authentication**: JWT-based auth with registration, login, and user settings
+- **AI Conversation**: LangChain integration with Groq LLM for multiple AI services
 - **Text-to-Speech**: Microsoft Edge TTS for natural voice synthesis
-- **Database**: PostgreSQL for conversation persistence
-- **API Endpoints**: RESTful APIs for conversation and TTS services
+- **Database**: PostgreSQL for user data, conversation persistence, and settings
+- **API Endpoints**: RESTful APIs for auth, conversations, AI services, and TTS
 
 ## 🚀 Getting Started
 
@@ -91,6 +102,9 @@ The frontend communicates with an Express.js backend that provides:
    ```env
    # Backend API URL (adjust if different)
    NEXT_PUBLIC_API_URL=http://localhost:8000
+
+   # Optional - Frontend URL for backend redirects
+   FRONTEND_URL=http://localhost:3000
    ```
 
 4. **Start the development server**
@@ -115,71 +129,53 @@ npm run build
 npm start
 ```
 
-## 📁 Project Structure
-
-```
-client/
-├── app/                          # Next.js App Router
-│   ├── components/              # Reusable UI components
-│   │   ├── AnimatedSection.tsx  # Animation wrapper
-│   │   ├── ClientComponents.tsx # Client-side component exports
-│   │   ├── CtaSection.tsx      # Call-to-action section
-│   │   ├── FeaturesSection.tsx # Features showcase
-│   │   ├── Footer.tsx          # Site footer
-│   │   ├── HeroSection.tsx     # Landing page hero
-│   │   ├── Navigation.tsx      # Site navigation
-│   │   ├── ParticleBackground.tsx # Animated background
-│   │   └── ScrollAnimation.tsx # Scroll-triggered animations
-│   ├── practice/               # Language practice feature
-│   │   ├── components/         # Practice-specific components
-│   │   │   ├── ConversationContainer.tsx # Chat interface
-│   │   │   ├── LanguageSelector.tsx     # Language picker
-│   │   │   ├── MessageBubble.tsx        # Individual messages
-│   │   │   ├── RecordingButton.tsx      # Voice input control
-│   │   │   ├── TranscriptDisplay.tsx    # Speech transcription
-│   │   │   └── UserInputArea.tsx        # Input interface
-│   │   ├── hooks/              # Custom React hooks
-│   │   │   ├── appReducer.ts   # State management
-│   │   │   └── useConversationState.ts # Main conversation logic
-│   │   ├── types/              # TypeScript definitions
-│   │   ├── utils/              # Utility functions
-│   │   └── data/               # Static data (languages)
-│   ├── globals.css             # Global styles
-│   ├── layout.tsx              # Root layout
-│   ├── page.tsx                # Landing page
-│   └── metadata.ts             # SEO metadata
-├── public/                     # Static assets
-├── package.json               # Dependencies and scripts
-├── tailwind.config.js         # Tailwind configuration
-└── tsconfig.json              # TypeScript configuration
-```
-
 ## 🎮 How to Use
 
 ### Landing Page
 
 1. **Explore Features**: Learn about the app's capabilities
 2. **View Supported Languages**: See all 75+ supported languages
-3. **Get Started**: Click "Start Speaking Now" to begin practicing
+3. **Get Started**: Sign up or sign in to access the services
 
-### Practice Interface
+### Authentication
 
-1. **Select Language**: Choose your target language from the dropdown
-2. **Start Conversation**:
-   - **Manual Mode**: Press the magical orb to speak, press again to stop
-   - **Auto Mode**: Long-press the orb to enable continuous conversation
-3. **Speak Naturally**: Talk in your chosen language
-4. **Listen to AI**: The AI responds with natural speech
-5. **Replay Messages**: Click any AI message to hear it again
-6. **Switch Languages**: Change languages to start a new conversation
+1. **Sign Up**: Create a new account with username, email, and password
+2. **Sign In**: Log in with your existing credentials
+3. **User Settings**: Manage your language preferences and settings
+
+### Services Interface
+
+1. **Sidebar Navigation**: Access different AI services from the collapsible sidebar
+
+   - **Conversation**: Practice speaking with AI in your target language
+   - **Grammar Checker**: Check and correct grammar mistakes
+   - **Translator**: Translate text between languages
+   - **Summariser**: Summarise long text into key points
+   - **Paraphraser**: Rephrase text while maintaining meaning
+
+2. **Conversation Practice**:
+
+   - **Select Language**: Choose your target language from the dropdown
+   - **Start Conversation**:
+     - **Manual Mode**: Press the magical orb to speak, press again to stop
+     - **Auto Mode**: Long-press the orb to enable continuous conversation
+   - **Speak Naturally**: Talk in your chosen language
+   - **Listen to AI**: The AI responds with natural speech
+   - **Replay Messages**: Click any AI message to hear it again
+   - **Manage Conversations**: Edit titles, delete conversations, or start new ones
+
+3. **Mobile Experience**:
+   - **Hamburger Menu**: Access sidebar on mobile via the menu button
+   - **Touch Controls**: Optimized touch targets for mobile interaction
+   - **Responsive Layout**: Adaptive layout for different screen sizes
 
 ### Voice Interaction States
 
-- 🎤 **Blue Orb**: Currently listening to your speech
-- 🟢 **Green Orb**: AI is speaking
-- 🟡 **Yellow Orb**: Processing your input
-- 🟣 **Purple Orb**: Auto-listen mode active
-- ⭕ **Red Stop**: Press to stop auto-listen mode
+- 🎤 **Listening**: Currently recording your speech
+- 🟢 **AI Speaking**: AI is generating voice response
+- 🟡 **Processing**: Analyzing your input
+- 🟣 **Auto-Listen**: Continuous conversation mode active
+- ⭕ **Stop**: Press to stop auto-listen mode
 
 ## 🛠️ Dependencies
 
@@ -187,11 +183,15 @@ client/
 
 ```json
 {
-  "next": "15.2.4", // React framework
+  "next": "15.2.4", // React framework with App Router
   "react": "^19.0.0", // UI library
   "react-dom": "^19.0.0", // React DOM
   "react-responsive": "^10.0.1", // Responsive utilities
-  "msedge-tts": "^1.3.4" // Text-to-speech
+  "msedge-tts": "^1.3.4", // Text-to-speech
+  "framer-motion": "^12.15.0", // Animations
+  "react-markdown": "^10.1.0", // Markdown rendering
+  "remark-gfm": "^4.0.1", // GitHub Flavored Markdown
+  "rehype-highlight": "^7.0.2" // Syntax highlighting
 }
 ```
 
@@ -199,32 +199,31 @@ client/
 
 ```json
 {
-  "@tailwindcss/postcss": "^4.1.3", // Styling
+  "@tailwindcss/postcss": "^4.1.3", // Tailwind CSS processing
+  "tailwindcss": "^4", // Utility-first CSS framework
   "typescript": "^5", // Type safety
   "eslint": "^9", // Code linting
-  "eslint-config-next": "15.2.4" // Next.js ESLint config
+  "eslint-config-next": "15.2.4", // Next.js ESLint config
+  "@eslint/eslintrc": "^3", // ESLint configuration
+  "@types/node": "^20", // Node.js type definitions
+  "@types/react": "^19", // React type definitions
+  "@types/react-dom": "^19" // React DOM type definitions
 }
 ```
 
 ## 🎨 Design System
 
-### Color Palette
-
-- **Primary**: Emerald and teal tones for natural, calming feel
-- **Secondary**: Amber and yellow for warmth and energy
-- **Accent**: Blue for interactive elements
-- **Background**: Soft amber/indigo with transparency
-
 ### Typography
 
-- **Handwriting Font**: Custom handwritten style for magical feel
+- **Custom Fonts**: Handwritten style fonts for branding
 - **Sans-serif**: Clean, readable text for content
 
 ### Animations
 
-- **Scroll Animations**: Fade, slide, and scale effects
-- **Hover Effects**: Gentle scaling and color transitions
+- **Scroll Animations**: Fade, slide, and scale effects with Framer Motion
+- **Touch Interactions**: Active scale effects for mobile (`active:scale-95`)
 - **Loading States**: Pulsing and rotation animations
+- **Performance Optimized**: Reduced animations on mobile devices for better performance
 
 ## 🔧 Configuration
 
@@ -242,10 +241,10 @@ FRONTEND_URL=http://localhost:3000
 
 The project uses Tailwind CSS 4.0 with custom configurations for:
 
-- Custom fonts (`font-handwriting`)
-- Extended color palette
+- Custom fonts and typography
 - Animation utilities
 - Responsive breakpoints
+- Touch interaction classes
 
 ## 🐛 Troubleshooting
 
@@ -270,9 +269,22 @@ The project uses Tailwind CSS 4.0 with custom configurations for:
    - Check microphone quality
 
 4. **Conversation Not Saving**
+
    - Verify backend database connection
+   - Check user authentication status
    - Check network connectivity
    - Ensure backend API is running on port 8000
+
+5. **Mobile Touch Issues**
+
+   - Ensure touch targets meet minimum 44px requirement
+   - Check for proper `touch-manipulation` CSS properties
+   - Verify mobile viewport meta tag is configured
+
+6. **Authentication Issues**
+   - Check JWT token validity and expiration
+   - Verify user session status
+   - Clear browser storage and retry login
 
 ### Browser Support
 
@@ -302,27 +314,34 @@ The project uses Tailwind CSS 4.0 with custom configurations for:
 ### Responsive Design
 
 - **Breakpoints**: Mobile (0-768px), Tablet (768-1024px), Desktop (1024px+)
-- **Touch Optimization**: Large touch targets for voice controls
+- **Touch Optimization**: Large touch targets (minimum 44px) for voice controls
+- **Sidebar Navigation**: Collapsible sidebar with hamburger menu on mobile
 - **Viewport Handling**: Proper mobile viewport configuration
-- **Orientation Support**: Works in both portrait and landscape
+- **Orientation Support**: Works in both portrait and landscape modes
 
 ### Mobile-Specific Features
 
-- **Touch Voice Control**: Tap-to-start/stop voice recording
-- **Visual Feedback**: Clear visual indicators for voice states
-- **Reduced Animations**: Performance-optimized animations on mobile
+- **Touch Voice Control**: Tap-to-start/stop voice recording with haptic feedback
+- **Visual Feedback**: Clear visual indicators for voice states and interactions
+- **Mobile Overlay**: Full-screen overlay for sidebar navigation on mobile
+- **Reduced Animations**: Performance-optimized animations on mobile devices
+- **Touch Gestures**: Enhanced touch interactions with `touch-manipulation` and active states
+- **Mobile Header**: Fixed header with logo and hamburger menu for easy navigation
 
 ## 🧪 Testing
 
 ### Manual Testing Checklist
 
 - [ ] Voice recognition in multiple languages
-- [ ] AI response generation and playback
+- [ ] AI response generation and playback for all services
 - [ ] Audio replay functionality
-- [ ] Language switching
-- [ ] Mobile responsiveness
+- [ ] Language switching and conversation management
+- [ ] User authentication (sign up, sign in, logout)
+- [ ] Conversation history and editing
+- [ ] Mobile responsiveness and touch interactions
+- [ ] Sidebar navigation and hamburger menu
 - [ ] Dark/light mode switching
-- [ ] Animation performance
+- [ ] Animation performance across devices
 
 ### Browser Testing
 
@@ -330,6 +349,36 @@ The project uses Tailwind CSS 4.0 with custom configurations for:
 - [ ] Edge (recommended)
 - [ ] Firefox (limited)
 - [ ] Safari (basic)
+- [ ] Mobile browsers (Chrome Mobile, Safari Mobile)
+
+## 🔧 Recent Updates
+
+### Mobile Optimization (Latest)
+
+The application has been comprehensively optimized for mobile devices:
+
+- **Responsive Sidebar**: Implemented collapsible sidebar with mobile overlay and hamburger menu
+- **Touch-Friendly Controls**: Enhanced touch targets with minimum 44px heights and `touch-manipulation`
+- **Mobile Navigation**: Added mobile header with menu toggle functionality
+- **Touch Interactions**: Added `active:scale-95` effects for better touch feedback
+- **Mobile Layout**: Responsive padding, margins, and text sizing throughout the application
+- **Conversation Interface**: Optimized chat components for mobile viewing and interaction
+
+### Authentication System
+
+- **User Registration**: Secure account creation with validation
+- **JWT Authentication**: Token-based session management
+- **User Settings**: Persistent language preferences and theme settings
+- **Conversation History**: User-specific conversation storage and management
+
+### AI Services Suite
+
+- **Conversation AI**: Interactive voice conversations with AI in 75+ languages
+- **Grammar Checker**: Intelligent grammar correction and improvement suggestions
+- **Language Translator**: Accurate translation between multiple language pairs
+- **Text Summariser**: AI-powered text summarization for key points extraction
+- **Text Paraphraser**: Content rephrasing while maintaining original meaning
+- **Unified Interface**: Consistent UI/UX across all AI services with responsive design
 
 ## 🔄 Updates and Maintenance
 
@@ -342,11 +391,14 @@ The project uses Tailwind CSS 4.0 with custom configurations for:
 
 ### Upcoming Features
 
-- [ ] User authentication and profiles
-- [ ] Progress tracking and analytics
+- [ ] User profile management and preferences
+- [ ] Advanced conversation analytics and progress tracking
 - [ ] Offline support for basic features
-- [ ] Additional language models
-- [ ] Custom voice selection
+- [ ] Additional AI language models and voice options
+- [ ] Custom voice selection and speech rate control
+- [ ] Advanced mobile gestures and interactions
+- [ ] Push notifications for practice reminders
+- [ ] Social features and language learning community
 
 ## 🤝 Contributing
 
@@ -379,12 +431,25 @@ This project is part of a language learning application suite. Please refer to t
 
 ### Technical Support
 
-- **Backend Issues**: Check server documentation
-- **Database Issues**: Verify PostgreSQL connection
-- **API Issues**: Check backend API logs
+- **Backend Issues**: Check server documentation and API logs
+- **Database Issues**: Verify PostgreSQL connection and user authentication
+- **API Issues**: Check backend API logs and network connectivity
+- **Mobile Issues**: Verify touch targets, viewport settings, and responsive breakpoints
+- **Authentication Issues**: Check JWT token validity and user session status
 
 ---
 
 **Created with ❤️ for language learners everywhere**
 
 _Embark on your magical language learning journey today!_ ✨
+
+## 📋 Quick Start Summary
+
+1. **Clone & Install**: `git clone <repo> && cd client && npm install`
+2. **Environment**: Copy `.env.local.example` to `.env.local` and configure
+3. **Start Development**: `npm run dev`
+4. **Open Browser**: Navigate to `http://localhost:3000`
+5. **Sign Up**: Create an account to access all services
+6. **Start Learning**: Choose a service and begin your language journey!
+
+For detailed backend setup, refer to the server documentation in the `../server/` directory.
