@@ -1,10 +1,10 @@
 "use client";
 
 import { useLoading } from "../contexts/LoadingContext";
-import GhibliLoader from "./GhibliLoader";
+import AppLoader from "./GhibliLoader";
 
 export default function PageLoader() {
   const { isLoading } = useLoading();
 
-  return <GhibliLoader isLoading={isLoading} />;
+  return <AppLoader isLoading={isLoading} />;
 }

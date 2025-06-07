@@ -4,7 +4,9 @@ import { Suspense } from "react";
 import StructuredData from "./components/StructuredData";
 import HeroSection from "./components/HeroSection";
 import FeaturesSection from "./components/FeaturesSection";
+import StatsSection from "./components/StatsSection";
 import ServicesSection from "./components/ServicesSection";
+
 import LanguagesSection from "./components/LanguagesSection";
 import CtaSection from "./components/CtaSection";
 import Footer from "./components/Footer";
@@ -47,10 +49,16 @@ export default function Home() {
             <FeaturesSection />
           </AnimatedSection>
 
+          {/* Stats Section with scale-in animation */}
+          <AnimatedSection>
+            <StatsSection />
+          </AnimatedSection>
+
           {/* Services Section with slide-in animation */}
           <AnimatedSection>
             <ServicesSection />
           </AnimatedSection>
+
 
           {/* Languages Section with slide-in animation */}
           <AnimatedSection>

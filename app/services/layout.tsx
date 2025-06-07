@@ -5,10 +5,214 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
 import SVGFilters from "../components/SVGFilters";
 import ParticleBackground from "../components/ParticleBackground";
-import { useConversationManager } from "./hooks/useConversationManager";
+import { useConversationManager, ConversationSummary } from "./hooks/useConversationManager";
+import NewConversationModal from "./components/NewConversationModal";
 
 interface ServicesLayoutProps {
   children: ReactNode;
+}
+
+// Conversation Item component to handle individual conversation with options dropdown
+interface ConversationItemProps {
+  conversation: ConversationSummary;
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+function ConversationItem({ conversation, isSelected, onSelect }: ConversationItemProps) {
+  const [showOptionsPopup, setShowOptionsPopup] = useState(false);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editTitle, setEditTitle] = useState(conversation.title);
+  const { deleteConversation, updateConversationTitle } = useConversationManager();
+
+  const handleEditTitle = () => {
+    setIsEditingTitle(true);
+    setEditTitle(conversation.title);
+    setShowOptionsPopup(false);
+  };
+
+  const handleSaveTitle = async () => {
+    if (editTitle.trim()) {
+      const success = await updateConversationTitle(conversation.language, editTitle.trim());
+      if (success) {
+        setIsEditingTitle(false);
+      }
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditingTitle(false);
+    setEditTitle(conversation.title);
+  };
+
+  const handleDeleteConversation = async () => {
+    if (window.confirm(`Are you sure you want to delete "${conversation.title}"? This action cannot be undone.`)) {
+      await deleteConversation(conversation.language);
+    }
+    setShowOptionsPopup(false);
+  };
+
+  const handleOptionsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowOptionsPopup(!showOptionsPopup);
+  };
+
+  return (
+    <div
+      className={`relative w-full rounded-lg transition-all duration-200 group ${
+        isSelected
+          ? "bg-emerald-200 dark:bg-emerald-700"
+          : "hover:bg-emerald-100 dark:hover:bg-emerald-800/25"
+      }`}
+      style={{
+        borderRadius: "12px 6px 8px 7px",
+        boxShadow: "1px 1px 3px rgba(0,0,0,0.05)",
+        minHeight: "48px",
+      }}
+    >
+      {/* Main conversation area - clickable div instead of button */}
+      <div
+        role="button"
+        tabIndex={0}
+        aria-label={`Select conversation: ${conversation.title}`}
+        onClick={onSelect}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onSelect();
+          }
+        }}
+        className="flex items-center gap-3 px-3 py-2.5 text-left cursor-pointer touch-manipulation active:scale-95 w-full"
+      >
+        <ConversationIcon />
+        <div className="flex-1 min-w-0">
+          {isEditingTitle ? (
+            <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+              <input
+                type="text"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                className="w-full px-2 py-1 text-sm border border-emerald-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-600 dark:border-emerald-600 dark:text-emerald-100"
+                placeholder="Enter conversation title"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSaveTitle();
+                  } else if (e.key === "Escape") {
+                    handleCancelEdit();
+                  }
+                }}
+              />
+              <div className="flex space-x-2">
+                <button
+                  onClick={handleSaveTitle}
+                  className="px-2 py-1 text-xs bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancelEdit}
+                  className="px-2 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="text-sm font-medium truncate text-emerald-800 dark:text-white">
+                {conversation.title}
+              </div>
+              <div className="text-xs text-emerald-700 dark:text-emerald-300 opacity-80">
+                {conversation.language}
+              </div>
+            </>
+          )}
+        </div>
+        
+        {/* Options button - separate from the main clickable area */}
+        {!isEditingTitle && (
+          <button
+            onClick={handleOptionsClick}
+            className="flex-shrink-0 p-1.5 rounded-md opacity-100"
+            aria-label="Conversation options"
+            title="More options"
+          >
+            <svg
+              className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
+
+      {/* Options popup modal */}
+      {showOptionsPopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+          <div 
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm transform transition-all border-2 border-gray-200 dark:border-gray-600"
+            style={{
+              borderRadius: "16px 10px 14px 12px",
+              boxShadow: "8px 8px 20px rgba(0,0,0,0.2)"
+            }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-600">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                Conversation Options
+              </h3>
+              <button
+                onClick={() => setShowOptionsPopup(false)}
+                className="w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center justify-center text-gray-500 dark:text-gray-400"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-4 space-y-2">
+              <div className="mb-4">
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Current conversation:</div>
+                <div className="font-medium text-gray-900 dark:text-white">{conversation.title}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">{conversation.language}</div>
+              </div>
+
+              <button
+                onClick={handleEditTitle}
+                className="w-full px-4 py-3 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-3 text-gray-700 dark:text-gray-300"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit Title
+              </button>
+
+              <button
+                onClick={handleDeleteConversation}
+                className="w-full px-4 py-3 text-left rounded-lg hover:bg-red-50 dark:hover:bg-red-900/25 transition-colors flex items-center gap-3 text-red-600 dark:text-red-400"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete Conversation
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // Service configuration
@@ -94,7 +298,7 @@ const services = [
 // Icons
 const ConversationIcon = () => (
   <svg
-    className="w-4 h-4 flex-shrink-0"
+    className="w-4 h-4 flex-shrink-0 text-emerald-800 dark:text-emerald-200"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -170,9 +374,11 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showNewConversationModal, setShowNewConversationModal] = useState(false);
+  const [isCreatingConversation, setIsCreatingConversation] = useState(false);
 
   // Initialize conversation manager for sidebar conversations list
-  const { conversations, isLoading: isLoadingConversations } =
+  const { conversations, isLoading: isLoadingConversations, createNewConversation } =
     useConversationManager();
 
   // Redirect if not authenticated
@@ -207,6 +413,23 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
     const url = new URL(window.location.href);
     url.searchParams.set("language", language);
     window.history.replaceState({}, "", url.toString());
+  };
+
+  const handleCreateNewConversation = async (title: string, language: string) => {
+    setIsCreatingConversation(true);
+    try {
+      const success = await createNewConversation(title, language);
+      if (success) {
+        // Switch to the new conversation
+        handleServiceChange("conversation");
+        handleLanguageChange(language);
+        setShowNewConversationModal(false);
+      }
+    } catch (error) {
+      console.error("Failed to create conversation:", error);
+    } finally {
+      setIsCreatingConversation(false);
+    }
   };
 
   if (isLoading) {
@@ -417,10 +640,7 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
                     Conversations
                   </h3>
                   <button
-                    onClick={() => {
-                      handleServiceChange("conversation");
-                      handleLanguageChange("English");
-                    }}
+                    onClick={() => setShowNewConversationModal(true)}
                     className="text-xs bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-white px-3 py-1.5 rounded-lg hover:bg-emerald-200 dark:hover:bg-emerald-600 transition-all duration-200 font-medium shadow-sm active:scale-95 touch-manipulation"
                     title="Start new conversation"
                     style={{
@@ -441,34 +661,18 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
                     </div>
                   ) : conversations.length > 0 ? (
                     conversations.map((conv) => (
-                      <button
+                      <ConversationItem
                         key={conv.id}
-                        onClick={() => {
+                        conversation={conv}
+                        isSelected={
+                          selectedService === "conversation" &&
+                          selectedLanguage === conv.language
+                        }
+                        onSelect={() => {
                           handleServiceChange("conversation");
                           handleLanguageChange(conv.language);
                         }}
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-200 group touch-manipulation active:scale-95 ${
-                          selectedService === "conversation" &&
-                          selectedLanguage === conv.language
-                            ? "bg-blue-200 dark:bg-blue-700 text-emerald-800 dark:text-white"
-                            : "text-emerald-800 dark:text-emerald-200 hover:bg-blue-100 dark:hover:bg-blue-800/25"
-                        }`}
-                        style={{
-                          borderRadius: "12px 6px 8px 7px",
-                          boxShadow: "1px 1px 3px rgba(0,0,0,0.05)",
-                          minHeight: "48px", // Better touch targets
-                        }}
-                      >
-                        <ConversationIcon />
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium truncate">
-                            {conv.title}
-                          </div>
-                          <div className="text-xs text-emerald-700 dark:text-emerald-300 opacity-80">
-                            {conv.language}
-                          </div>
-                        </div>
-                      </button>
+                      />
                     ))
                   ) : (
                     <div className="text-sm text-emerald-700 dark:text-emerald-300 italic text-center py-4 px-2">
@@ -586,6 +790,14 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
           }}
         />
       )}
+
+      {/* New Conversation Modal */}
+      <NewConversationModal
+        isOpen={showNewConversationModal}
+        onClose={() => setShowNewConversationModal(false)}
+        onCreateConversation={handleCreateNewConversation}
+        isCreating={isCreatingConversation}
+      />
     </div>
   );
 }

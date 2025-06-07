@@ -10,7 +10,7 @@ export default function FeaturesSection() {
           className="text-2xl sm:text-3xl md:text-4xl font-handwriting text-center text-emerald-800 dark:text-emerald-200 mb-8 sm:mb-12 transform rotate-[0.5deg]"
           style={{ textShadow: "1px 1px 0 rgba(0,50,0,0.1)" }}
         >
-          How The Magic Works
+          How It Works
         </h2>
       </MotionWrapper>
 
@@ -47,8 +47,8 @@ export default function FeaturesSection() {
                 You Speak
               </h3>
               <p className="text-sm sm:text-base text-emerald-700 dark:text-emerald-100 text-center font-handwriting flex-grow">
-                Speak in any language and our magical ears will listen and
-                understand your words.
+                Speak naturally in your target language and our advanced AI will
+                accurately recognize and process your speech.
               </p>
             </div>
           </div>
@@ -86,8 +86,8 @@ export default function FeaturesSection() {
                 Our AI Thinks
               </h3>
               <p className="text-sm sm:text-base text-emerald-700 dark:text-emerald-100 text-center font-handwriting flex-grow">
-                A wise AI tutor crafts a perfect response that matches your
-                language level.
+                Our intelligent AI analyzes your input and generates
+                contextually appropriate responses tailored to your skill level.
               </p>
             </div>
           </div>
@@ -122,11 +122,11 @@ export default function FeaturesSection() {
             </div>
             <div className="flex flex-col flex-grow">
               <h3 className="text-lg sm:text-xl font-handwriting text-center text-emerald-800 dark:text-emerald-100 mb-2">
-                Magical Response
+                AI Response
               </h3>
               <p className="text-sm sm:text-base text-emerald-700 dark:text-emerald-100 text-center font-handwriting flex-grow">
-                Listen as our companion responds in a natural voice, helping you
-                immerse in the language.
+                Receive natural voice responses that help you learn
+                pronunciation and improve your language comprehension.
               </p>
             </div>
           </div>

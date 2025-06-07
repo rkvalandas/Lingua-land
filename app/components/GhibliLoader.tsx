@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-interface GhibliLoaderProps {
+interface AppLoaderProps {
   isLoading?: boolean;
 }
 
-export default function GhibliLoader({ isLoading = true }: GhibliLoaderProps) {
+export default function AppLoader({ isLoading = true }: AppLoaderProps) {
   const [show, setShow] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
 
@@ -67,7 +67,7 @@ export default function GhibliLoader({ isLoading = true }: GhibliLoaderProps) {
             textShadow: "1px 1px 0px rgba(0,0,0,0.1)",
           }}
         >
-          Loading Magic...
+          Loading...
         </h2>
       </div>
 

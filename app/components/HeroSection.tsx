@@ -24,12 +24,12 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
             </MotionWrapper>
             <MotionWrapper animationType="slide-in-right" delay={500}>
               <span className="block text-lime-700 dark:text-lime-200 transform rotate-[0.5deg]">
-                Magical Language
+                Language Learning
               </span>
             </MotionWrapper>
             <MotionWrapper animationType="slide-in-left" delay={700}>
               <span className="block text-teal-700 dark:text-teal-200 transform rotate-[-0.2deg]">
-                Journey
+                Adventure
               </span>
             </MotionWrapper>
           </h1>
@@ -37,10 +37,10 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
 
         <MotionWrapper animationType="fade-up" delay={900}>
           <p className="text-base sm:text-lg md:text-xl text-emerald-800 dark:text-emerald-50 font-handwriting">
-            Immerse yourself in a world where language learning feels like a
-            Studio Ghibli adventure. Our AI companion guides you through
-            conversations that adapt to your skill level, while our powerful
-            services help you master grammar, translation, and more.
+            Master languages with AI-powered conversations that adapt to your
+            skill level. Practice speaking, improve grammar, translate
+            instantly, and unlock fluency with our comprehensive language
+            learning platform.
           </p>
         </MotionWrapper>
 
@@ -48,27 +48,24 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <Link
               href="/services"
-              className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-amber-100 dark:bg-yellow-700 text-amber-800 dark:text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all"
+              className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all shadow-lg hover:shadow-xl"
               style={{
                 borderRadius: "15px 5px 10px 20px",
-                border: "2px solid #f59e0b",
                 filter: "url(#paper-filter)",
-                boxShadow: "4px 4px 8px rgba(0,0,0,0.1)",
               }}
             >
-              Start Your Journey
+              🚀 Start Learning
             </Link>
             <Link
-              href="/services"
-              className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all"
+              href="#how-it-works"
+              className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-amber-100 dark:bg-yellow-700 text-amber-800 dark:text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all border-2 border-amber-300 dark:border-amber-500 hover:bg-amber-200 dark:hover:bg-yellow-600"
               style={{
                 borderRadius: "20px 10px 5px 15px",
-                border: "2px solid #10b981",
                 filter: "url(#paper-filter)",
                 boxShadow: "4px 4px 8px rgba(0,0,0,0.1)",
               }}
             >
-              Explore Services
+              ✨ How It Works
             </Link>
           </div>
         </MotionWrapper>

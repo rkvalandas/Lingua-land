@@ -23,14 +23,15 @@ export default function CtaSection() {
               className="text-2xl sm:text-3xl md:text-4xl font-handwriting text-emerald-800 dark:text-emerald-100 mb-3 sm:mb-4"
               style={{ textShadow: "1px 1px 0 rgba(0,50,0,0.1)" }}
             >
-              Begin Your Language Adventure Today
+              Start Your Language Learning Journey Today
             </h2>
           </MotionWrapper>
 
           <MotionWrapper animationType="fade-up" delay={400}>
             <p className="text-base sm:text-lg text-emerald-700 dark:text-lime-200 mb-6 sm:mb-8 max-w-2xl mx-auto font-handwriting">
-              Join thousands of learners who have discovered the joy of
-              immersive language learning through our magical AI companion.
+              Join learners worldwide who are mastering new languages with our
+              AI-powered platform. Practice speaking, improve grammar, and
+              achieve fluency faster than ever before.
             </p>
           </MotionWrapper>
 

@@ -52,19 +52,6 @@ export default function Services() {
 
             {/* Practice Interface */}
             <div className="relative z-10 flex-1 flex flex-col">
-              {/* Language Selector */}
-              <LanguageSelector
-                languages={languages}
-                selectedLanguage={selectedLanguage}
-                setSelectedLanguage={(language) => {
-                  const url = new URL(window.location.href);
-                  url.searchParams.set("language", language);
-                  window.history.replaceState({}, "", url.toString());
-                  window.location.reload(); // Refresh to update the conversation state
-                }}
-                disabled={state.isProcessing || state.isSpeaking}
-              />
-
               {/* Conversation Container */}
               <ConversationContainer
                 ref={conversationContainerRef}

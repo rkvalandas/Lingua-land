@@ -6,6 +6,27 @@ import MotionWrapper from "./MotionWrapper";
 export default function ServicesSection() {
   const services = [
     {
+      title: "AI Conversation",
+      description:
+        "Practice speaking with an intelligent AI companion that adapts to your language level.",
+      icon: (
+        <svg
+          className="h-8 w-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+          />
+        </svg>
+      ),
+      color: "teal",
+    },
+    {
       title: "Grammar Checker",
       description:
         "Perfect your writing with AI-powered grammar corrections and suggestions.",
@@ -93,6 +114,12 @@ export default function ServicesSection() {
 
   const getColorClasses = (color: string) => {
     const colors = {
+      teal: {
+        bg: "bg-teal-200 dark:bg-teal-700",
+        border: "border-teal-400 dark:border-teal-500",
+        iconBg: "bg-teal-100 dark:bg-teal-900",
+        iconText: "text-teal-600 dark:text-teal-400",
+      },
       emerald: {
         bg: "bg-emerald-200 dark:bg-emerald-700",
         border: "border-emerald-400 dark:border-emerald-500",
@@ -131,11 +158,11 @@ export default function ServicesSection() {
           Language Learning Services
         </h2>
         <p className="text-lg text-emerald-700 dark:text-emerald-300 text-center font-handwriting mb-8 sm:mb-12">
-          Powerful tools to enhance your language mastery
+          Five powerful AI services to accelerate your language learning journey
         </p>
       </MotionWrapper>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 sm:gap-8">
         {services.map((service, index) => {
           const colorClasses = getColorClasses(service.color);
           return (

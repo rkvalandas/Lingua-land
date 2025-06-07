@@ -19,8 +19,8 @@ const ConversationContainer = forwardRef(function ConversationContainer(
       className="flex-1 overflow-y-auto mb-6 rounded-2xl p-5 border-2 border-amber-400 dark:border-amber-500 transition-all duration-300 relative bg-yellow-200 dark:bg-amber-900/20"
       style={{ 
         boxShadow: "inset 0 0 20px rgba(217, 119, 6, 0.2), 3px 3px 5px rgba(0, 0, 0, 0.1)",
-        maxHeight: "60vh", 
-        height: "60vh",
+        maxHeight: "75vh", 
+        height: "75vh",
       }}
     >
       {conversation.length === 0 && !isListening ? (
