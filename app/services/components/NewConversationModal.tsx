@@ -39,11 +39,11 @@ export default function NewConversationModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-      <div 
+      <div
         className="bg-yellow-100/95 dark:bg-yellow-800/95 backdrop-blur-md rounded-2xl shadow-2xl w-full max-w-md transform transition-all border-2 border-amber-400 dark:border-amber-500"
         style={{
           borderRadius: "20px 12px 16px 14px",
-          boxShadow: "8px 8px 20px rgba(0,0,0,0.2)"
+          boxShadow: "8px 8px 20px rgba(0,0,0,0.2)",
         }}
       >
         {/* Header */}
@@ -93,7 +93,7 @@ export default function NewConversationModal({
                        focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500
                        placeholder-emerald-600 dark:placeholder-emerald-400"
               style={{
-                borderRadius: "12px 6px 8px 7px"
+                borderRadius: "12px 6px 8px 7px",
               }}
               required
               autoFocus
@@ -116,7 +116,7 @@ export default function NewConversationModal({
                        bg-yellow-50/80 dark:bg-yellow-700/50 text-emerald-900 dark:text-emerald-100
                        focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               style={{
-                borderRadius: "12px 6px 8px 7px"
+                borderRadius: "12px 6px 8px 7px",
               }}
               required
             >
@@ -133,12 +133,12 @@ export default function NewConversationModal({
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 px-4 py-3 border border-amber-300 dark:border-amber-600 
+              className="paper-texture flex-1 px-4 py-3 border border-amber-300 dark:border-amber-600 
                        text-emerald-700 dark:text-emerald-300 rounded-lg
                        hover:bg-amber-100 dark:hover:bg-amber-800/30 transition-colors
                        font-medium"
               style={{
-                borderRadius: "10px 5px 7px 6px"
+                borderRadius: "10px 5px 7px 6px",
               }}
             >
               Cancel
@@ -146,12 +146,12 @@ export default function NewConversationModal({
             <button
               type="submit"
               disabled={!title.trim() || isCreating}
-              className="flex-1 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 
+              className="paper-texture flex-1 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 
                        disabled:bg-emerald-400 disabled:cursor-not-allowed
                        text-white rounded-lg transition-colors font-medium
                        flex items-center justify-center gap-2"
               style={{
-                borderRadius: "10px 5px 7px 6px"
+                borderRadius: "10px 5px 7px 6px",
               }}
             >
               {isCreating ? (

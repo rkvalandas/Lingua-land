@@ -62,7 +62,7 @@ export default function AIServiceUI({
         {state.result && (
           <button
             onClick={onClear}
-            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm touch-manipulation active:scale-95 self-start sm:self-auto"
+            className="paper-texture px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm touch-manipulation active:scale-95 self-start sm:self-auto"
           >
             Clear
           </button>
@@ -151,7 +151,7 @@ export default function AIServiceUI({
         <button
           onClick={handleSubmit}
           disabled={state.isLoading || !state.inputText.trim()}
-          className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-xl transition-colors transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center touch-manipulation active:scale-95 min-h-[48px]"
+          className="paper-texture w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-xl transition-colors transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center touch-manipulation active:scale-95 min-h-[48px]"
         >
           {state.isLoading ? (
             <>
@@ -205,7 +205,7 @@ export default function AIServiceUI({
                 onClick={() => {
                   navigator.clipboard.writeText(state.result);
                 }}
-                className="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm rounded-lg transition-colors touch-manipulation active:scale-95"
+                className="paper-texture px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm rounded-lg transition-colors touch-manipulation active:scale-95"
               >
                 Copy Result
               </button>

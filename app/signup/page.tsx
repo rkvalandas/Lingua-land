@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
 import Link from "next/link";
 import ParticleBackground from "../components/ParticleBackground";
-import SVGFilters from "../components/SVGFilters";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -57,7 +56,6 @@ export default function SignUp() {
   return (
     <div className="min-h-screen overflow-hidden relative bg-amber-50/50 dark:bg-indigo-900/50">
       <ParticleBackground />
-      <SVGFilters />
 
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
@@ -165,7 +163,7 @@ export default function SignUp() {
               <button
                 type="submit"
                 disabled={!validateForm() || isLoading}
-                className="w-full bg-amber-100 dark:bg-yellow-700 hover:bg-amber-200 dark:hover:bg-yellow-600 disabled:bg-gray-400 text-amber-800 dark:text-white font-semibold py-3 px-6 rounded-xl transition-colors transform hover:scale-105 disabled:transform-none border-2 border-amber-400 dark:border-amber-500"
+                className="paper-texture w-full bg-amber-100 dark:bg-yellow-700 hover:bg-amber-200 dark:hover:bg-yellow-600 disabled:bg-gray-400 text-amber-800 dark:text-white font-semibold py-3 px-6 rounded-xl transition-colors transform hover:scale-105 disabled:transform-none border-2 border-amber-400 dark:border-amber-500"
                 style={{
                   filter: "url(#paper-filter)",
                   boxShadow: "4px 4px 8px rgba(0,0,0,0.1)",

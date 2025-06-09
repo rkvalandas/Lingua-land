@@ -39,7 +39,7 @@ export default function CtaSection() {
             {user ? (
               <Link
                 href="/services"
-                className="inline-block px-8 sm:px-10 py-4 sm:py-5 bg-amber-100 text-amber-800 text-lg sm:text-xl transform hover:scale-105 transition-all animate-pulse"
+                className="paper-texture inline-block px-8 sm:px-10 py-4 sm:py-5 bg-amber-100 text-amber-800 text-lg sm:text-xl transform hover:scale-105 transition-all animate-pulse"
                 style={{
                   borderRadius: "15px",
                   border: "2px solid #f59e0b",
@@ -55,7 +55,7 @@ export default function CtaSection() {
             ) : (
               <button
                 onClick={() => setAuthModalOpen(true)}
-                className="inline-block px-8 sm:px-10 py-4 sm:py-5 bg-amber-100 text-amber-800 text-lg sm:text-xl transform hover:scale-105 transition-all animate-pulse"
+                className="paper-texture inline-block px-8 sm:px-10 py-4 sm:py-5 bg-amber-100 text-amber-800 text-lg sm:text-xl transform hover:scale-105 transition-all animate-pulse"
                 style={{
                   borderRadius: "15px",
                   border: "2px solid #f59e0b",

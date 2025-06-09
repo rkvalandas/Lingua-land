@@ -204,7 +204,7 @@ export default function ServicesSection() {
         <div className="text-center mt-8 sm:mt-12">
           <Link
             href="/services"
-            className="inline-block px-8 py-4 bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-white text-lg font-handwriting transform hover:scale-105 transition-all"
+            className="paper-texture inline-block px-8 py-4 bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-white text-lg font-handwriting transform hover:scale-105 transition-all"
             style={{
               borderRadius: "20px 5px 15px 10px",
               border: "2px solid #10b981",

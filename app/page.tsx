@@ -10,7 +10,6 @@ import ServicesSection from "./components/ServicesSection";
 import LanguagesSection from "./components/LanguagesSection";
 import CtaSection from "./components/CtaSection";
 import Footer from "./components/Footer";
-import SVGFilters from "./components/SVGFilters";
 
 // Import the client components wrapper
 import {
@@ -59,7 +58,6 @@ export default function Home() {
             <ServicesSection />
           </AnimatedSection>
 
-
           {/* Languages Section with slide-in animation */}
           <AnimatedSection>
             <LanguagesSection />
@@ -73,8 +71,6 @@ export default function Home() {
 
         {/* Footer with fade-up animation - Outside the flex-grow container to ensure visibility */}
         <Footer />
-
-        <SVGFilters />
       </div>
     </div>
   );

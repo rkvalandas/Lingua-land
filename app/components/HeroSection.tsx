@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import MotionWrapper from "./MotionWrapper";
+import StartLearningButton from "./StartLearningButton";
 
 interface HeroSectionProps {
   characterImage: string;
@@ -35,6 +36,47 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
           </h1>
         </MotionWrapper>
 
+        {/* Image for mobile - shows after title */}
+        <div className="md:hidden w-full sm:w-2/3 relative transform rotate-[1deg] flex items-center justify-center mt-6 mb-6">
+          <MotionWrapper animationType="fade-in" delay={300}>
+            <div className="relative w-full max-w-xs aspect-square mx-auto">
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{ filter: "url(#paper-filter)" }}
+              ></div>
+
+              <Image
+                src={characterImage}
+                alt="Character illustration representing language learning companions"
+                width={500}
+                height={500}
+                priority
+                className="relative z-10 w-full h-full object-contain"
+                style={{
+                  transform: "rotate(0.5deg) scale(1.2)",
+                }}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = "none";
+                  const placeholder = document.createElement("div");
+                  placeholder.className =
+                    "absolute inset-0 flex items-center justify-center";
+                  placeholder.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="70%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-700 dark:text-emerald-300">
+                      <circle cx="12" cy="8" r="5" />
+                      <path d="M20 14.5v.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-.5" />
+                      <path d="M16 18h-8l-2 7h12l-2-7Z" />
+                      <path d="M12 13v5" />
+                      <path d="M8 16c2 1 6 1 8 0" />
+                    </svg>
+                  `;
+                  target.parentNode?.appendChild(placeholder);
+                }}
+              />
+            </div>
+          </MotionWrapper>
+        </div>
+
         <MotionWrapper animationType="fade-up" delay={900}>
           <p className="text-base sm:text-lg md:text-xl text-emerald-800 dark:text-emerald-50 font-handwriting">
             Master languages with AI-powered conversations that adapt to your
@@ -46,19 +88,18 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
 
         <MotionWrapper animationType="scale-in" delay={1100}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <Link
-              href="/services"
-              className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all shadow-lg hover:shadow-xl"
+            <StartLearningButton
+              className="paper-texture inline-block px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all shadow-lg hover:shadow-xl"
               style={{
                 borderRadius: "15px 5px 10px 20px",
                 filter: "url(#paper-filter)",
               }}
             >
               🚀 Start Learning
-            </Link>
+            </StartLearningButton>
             <Link
               href="#how-it-works"
-              className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-amber-100 dark:bg-yellow-700 text-amber-800 dark:text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all border-2 border-amber-300 dark:border-amber-500 hover:bg-amber-200 dark:hover:bg-yellow-600"
+              className="paper-texture inline-block px-6 sm:px-8 py-3 sm:py-4 bg-amber-100 dark:bg-yellow-700 text-amber-800 dark:text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all border-2 border-amber-300 dark:border-amber-500 hover:bg-amber-200 dark:hover:bg-yellow-600"
               style={{
                 borderRadius: "20px 10px 5px 15px",
                 filter: "url(#paper-filter)",
@@ -71,7 +112,8 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
         </MotionWrapper>
       </div>
 
-      <div className="w-full sm:w-2/3 md:w-1/2 relative transform rotate-[1deg] flex items-center justify-center mt-8 md:mt-0">
+      {/* Image for desktop - shows on the right side */}
+      <div className="hidden md:flex w-full sm:w-2/3 md:w-1/2 relative transform rotate-[1deg] md:items-center md:justify-center mt-8 md:mt-0">
         <MotionWrapper animationType="fade-in" delay={300}>
           <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md aspect-square mx-auto">
             <div

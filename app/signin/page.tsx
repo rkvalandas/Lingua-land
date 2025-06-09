@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
 import Link from "next/link";
 import ParticleBackground from "../components/ParticleBackground";
-import SVGFilters from "../components/SVGFilters";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -44,7 +43,6 @@ export default function SignIn() {
   return (
     <div className="min-h-screen overflow-hidden relative bg-amber-50/50 dark:bg-indigo-900/50">
       <ParticleBackground />
-      <SVGFilters />
 
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
         <div className="w-full max-w-md">
@@ -111,7 +109,7 @@ export default function SignIn() {
               <button
                 type="submit"
                 disabled={!validateForm() || isLoading}
-                className="w-full bg-amber-100 dark:bg-yellow-700 hover:bg-amber-200 dark:hover:bg-yellow-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-amber-800 dark:text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] disabled:transform-none shadow-lg hover:shadow-xl disabled:shadow-md border-2 border-amber-400 dark:border-amber-500"
+                className="paper-texture w-full bg-amber-100 dark:bg-yellow-700 hover:bg-amber-200 dark:hover:bg-yellow-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-amber-800 dark:text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] disabled:transform-none shadow-lg hover:shadow-xl disabled:shadow-md border-2 border-amber-400 dark:border-amber-500"
                 style={{
                   filter: "url(#paper-filter)",
                   boxShadow: "4px 4px 8px rgba(0,0,0,0.1)",

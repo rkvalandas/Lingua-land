@@ -89,25 +89,26 @@ export default function ParticleBackground() {
 
       {/* Additional paper texture overlay with enhanced darkness for depth */}
       <div
-        className="absolute inset-0 z-0 opacity-60"
+        className="absolute inset-0 z-0 opacity-40"
         style={{
           background: `
             repeating-linear-gradient(
               0deg,
               transparent,
-              transparent 2px,
-              rgba(139, 69, 19, 0.08) 2px,
-              rgba(139, 69, 19, 0.08) 4px
+              transparent 1.5px,
+              rgba(139, 69, 19, 0.1) 1.5px,
+              rgba(139, 69, 19, 0.1) 3px
             ),
             repeating-linear-gradient(
               90deg,
               transparent,
-              transparent 2px,
-              rgba(139, 69, 19, 0.08) 2px,
-              rgba(139, 69, 19, 0.08) 4px
+              transparent 1.5px,
+              rgba(139, 69, 19, 0.1) 1.5px,
+              rgba(139, 69, 19, 0.1) 3px
             ),
-            linear-gradient(135deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.04) 100%),
+                        linear-gradient(135deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.04) 100%),
             radial-gradient(ellipse at center, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.05) 100%)
+
           `,
         }}
       />

@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect, ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
-import SVGFilters from "../components/SVGFilters";
 import ParticleBackground from "../components/ParticleBackground";
-import { useConversationManager, ConversationSummary } from "./hooks/useConversationManager";
+import {
+  useConversationManager,
+  ConversationSummary,
+} from "./hooks/useConversationManager";
 import NewConversationModal from "./components/NewConversationModal";
 
 interface ServicesLayoutProps {
@@ -17,13 +19,20 @@ interface ConversationItemProps {
   conversation: ConversationSummary;
   isSelected: boolean;
   onSelect: () => void;
+  onDelete: (language: string) => Promise<boolean>;
+  onUpdateTitle: (language: string, newTitle: string) => Promise<boolean>;
 }
 
-function ConversationItem({ conversation, isSelected, onSelect }: ConversationItemProps) {
+function ConversationItem({
+  conversation,
+  isSelected,
+  onSelect,
+  onDelete,
+  onUpdateTitle,
+}: ConversationItemProps) {
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editTitle, setEditTitle] = useState(conversation.title);
-  const { deleteConversation, updateConversationTitle } = useConversationManager();
 
   const handleEditTitle = () => {
     setIsEditingTitle(true);
@@ -33,7 +42,10 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
 
   const handleSaveTitle = async () => {
     if (editTitle.trim()) {
-      const success = await updateConversationTitle(conversation.language, editTitle.trim());
+      const success = await onUpdateTitle(
+        conversation.language,
+        editTitle.trim()
+      );
       if (success) {
         setIsEditingTitle(false);
       }
@@ -46,8 +58,12 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
   };
 
   const handleDeleteConversation = async () => {
-    if (window.confirm(`Are you sure you want to delete "${conversation.title}"? This action cannot be undone.`)) {
-      await deleteConversation(conversation.language);
+    if (
+      window.confirm(
+        `Are you sure you want to delete "${conversation.title}"? This action cannot be undone.`
+      )
+    ) {
+      await onDelete(conversation.language);
     }
     setShowOptionsPopup(false);
   };
@@ -77,7 +93,7 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
         aria-label={`Select conversation: ${conversation.title}`}
         onClick={onSelect}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             onSelect();
           }
@@ -106,13 +122,13 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
               <div className="flex space-x-2">
                 <button
                   onClick={handleSaveTitle}
-                  className="px-2 py-1 text-xs bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors"
+                  className="paper-texture px-2 py-1 text-xs bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors"
                 >
                   Save
                 </button>
                 <button
                   onClick={handleCancelEdit}
-                  className="px-2 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+                  className="paper-texture px-2 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
                 >
                   Cancel
                 </button>
@@ -129,7 +145,7 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
             </>
           )}
         </div>
-        
+
         {/* Options button - separate from the main clickable area */}
         {!isEditingTitle && (
           <button
@@ -158,11 +174,11 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
       {/* Options popup modal */}
       {showOptionsPopup && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-          <div 
+          <div
             className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm transform transition-all border-2 border-gray-200 dark:border-gray-600"
             style={{
               borderRadius: "16px 10px 14px 12px",
-              boxShadow: "8px 8px 20px rgba(0,0,0,0.2)"
+              boxShadow: "8px 8px 20px rgba(0,0,0,0.2)",
             }}
           >
             {/* Header */}
@@ -174,8 +190,18 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
                 onClick={() => setShowOptionsPopup(false)}
                 className="w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center justify-center text-gray-500 dark:text-gray-400"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -183,17 +209,33 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
             {/* Content */}
             <div className="p-4 space-y-2">
               <div className="mb-4">
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Current conversation:</div>
-                <div className="font-medium text-gray-900 dark:text-white">{conversation.title}</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">{conversation.language}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                  Current conversation:
+                </div>
+                <div className="font-medium text-gray-900 dark:text-white">
+                  {conversation.title}
+                </div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  {conversation.language}
+                </div>
               </div>
 
               <button
                 onClick={handleEditTitle}
                 className="w-full px-4 py-3 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-3 text-gray-700 dark:text-gray-300"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
                 </svg>
                 Edit Title
               </button>
@@ -202,8 +244,18 @@ function ConversationItem({ conversation, isSelected, onSelect }: ConversationIt
                 onClick={handleDeleteConversation}
                 className="w-full px-4 py-3 text-left rounded-lg hover:bg-red-50 dark:hover:bg-red-900/25 transition-colors flex items-center gap-3 text-red-600 dark:text-red-400"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
                 </svg>
                 Delete Conversation
               </button>
@@ -369,17 +421,39 @@ const LogoutIcon = () => (
 export default function ServicesLayout({ children }: ServicesLayoutProps) {
   const { user, logout, isLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedService, setSelectedService] = useState("conversation");
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showNewConversationModal, setShowNewConversationModal] = useState(false);
+  const [showNewConversationModal, setShowNewConversationModal] =
+    useState(false);
   const [isCreatingConversation, setIsCreatingConversation] = useState(false);
 
   // Initialize conversation manager for sidebar conversations list
-  const { conversations, isLoading: isLoadingConversations, createNewConversation } =
-    useConversationManager();
+  const {
+    conversations,
+    isLoading: isLoadingConversations,
+    createNewConversation,
+    deleteConversation,
+    updateConversationTitle,
+  } = useConversationManager();
+
+  // Check for new conversation parameter and show modal
+  useEffect(() => {
+    const shouldShowNewModal = searchParams.get("new") === "true";
+    if (shouldShowNewModal) {
+      setShowNewConversationModal(true);
+      // Remove the 'new' parameter from URL after showing modal
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete("new");
+      const newUrl = newParams.toString()
+        ? `${window.location.pathname}?${newParams.toString()}`
+        : window.location.pathname;
+      window.history.replaceState({}, "", newUrl);
+    }
+  }, [searchParams]);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -415,7 +489,10 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
     window.history.replaceState({}, "", url.toString());
   };
 
-  const handleCreateNewConversation = async (title: string, language: string) => {
+  const handleCreateNewConversation = async (
+    title: string,
+    language: string
+  ) => {
     setIsCreatingConversation(true);
     try {
       const success = await createNewConversation(title, language);
@@ -451,7 +528,6 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
 
   return (
     <div className="min-h-screen h-screen overflow-hidden relative bg-amber-50/50 dark:bg-indigo-900/50 flex">
-      <SVGFilters />
       <ParticleBackground />
 
       {/* Mobile Header - Only visible on mobile */}
@@ -641,7 +717,7 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
                   </h3>
                   <button
                     onClick={() => setShowNewConversationModal(true)}
-                    className="text-xs bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-white px-3 py-1.5 rounded-lg hover:bg-emerald-200 dark:hover:bg-emerald-600 transition-all duration-200 font-medium shadow-sm active:scale-95 touch-manipulation"
+                    className="paper-texture text-xs bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-white px-3 py-1.5 rounded-lg hover:bg-emerald-200 dark:hover:bg-emerald-600 transition-all duration-200 font-medium shadow-sm active:scale-95 touch-manipulation"
                     title="Start new conversation"
                     style={{
                       borderRadius: "8px 4px 6px 5px",
@@ -672,6 +748,8 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
                           handleServiceChange("conversation");
                           handleLanguageChange(conv.language);
                         }}
+                        onDelete={deleteConversation}
+                        onUpdateTitle={updateConversationTitle}
                       />
                     ))
                   ) : (
