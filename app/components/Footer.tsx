@@ -62,7 +62,7 @@ export default function Footer() {
               Learn More
             </h4>
             <ul className="space-y-2 text-sm text-emerald-700 dark:text-emerald-300 font-handwriting">
-              <li>75+ Languages Supported</li>
+              <li>150+ Languages Supported</li>
               <li>AI-Powered Learning</li>
               <li>Free to Use</li>
               <li>Available 24/7</li>

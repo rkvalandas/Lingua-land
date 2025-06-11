@@ -1,12 +1,12 @@
 # Lingua Land 🌟
 
-An AI-powered language learning application that combines voice recognition, AI conversation, and text-to-speech technologies to create a natural language learning experience across 75+ world languages.
+An AI-powered language learning application that combines voice recognition, AI conversation, and text-to-speech technologies to create a natural language learning experience across 150+ world languages.
 
 ## ✨ Features
 
 ### 🎯 Core Functionality
 
-- **Real-time Voice Conversation**: Practice speaking in 75+ languages with an AI companion
+- **Real-time Voice Conversation**: Practice speaking in 150+ languages with an AI companion
 - **Multiple AI Services**: Comprehensive language tools including conversation, grammar checking, translation, summarization, and paraphrasing
 - **Speech Recognition**: Advanced speech-to-text in multiple languages
 - **AI-Powered Responses**: Intelligent conversational AI that adapts to your language level
@@ -17,12 +17,13 @@ An AI-powered language learning application that combines voice recognition, AI 
 
 ### 🌍 Language Support
 
-The app supports conversation practice in 75+ languages including:
+The app supports conversation practice in 150+ languages including:
 
-- **European**: English, Spanish, French, German, Italian, Portuguese, Russian, Dutch, Polish, Swedish, Turkish, Greek, Czech, Finnish, Danish, Norwegian, Hungarian, Romanian, Slovak, Ukrainian, Catalan, Bulgarian, Croatian, Serbian, Lithuanian, Latvian, Estonian, Slovenian, Icelandic, Maltese, Welsh, Irish, Basque
-- **Asian**: Japanese, Chinese (Mandarin), Korean, Hindi, Vietnamese, Thai, Indonesian, Malay, Filipino, Urdu, Bengali, Telugu, Tamil, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Nepali, Sinhala, Burmese, Khmer, Lao, Mongolian, Kazakh, Uzbek, Kyrgyz, Tajik, Azerbaijani, Armenian, Georgian
-- **Middle Eastern & African**: Arabic, Hebrew, Persian, Kurdish, Amharic, Somali, Swahili, Yoruba, Igbo, Hausa, Zulu, Afrikaans
-- **Other**: Albanian, Bosnian, Macedonian, Montenegrin
+- **European**: English, Spanish, French, German, Italian, Portuguese, Russian, Dutch, Polish, Swedish, Turkish, Greek, Czech, Finnish, Danish, Norwegian, Hungarian, Romanian, Slovak, Ukrainian, Catalan, Bulgarian, Croatian, Serbian, Lithuanian, Latvian, Estonian, Slovenian, Icelandic, Maltese, Welsh, Irish, Basque, Galician, Belarusian, Faroese, Luxembourgish, Corsican, Frisian, Sardinian, Occitan, Breton, Scottish Gaelic
+- **Asian**: Japanese, Chinese (Mandarin/Cantonese), Korean, Hindi, Vietnamese, Thai, Indonesian, Malay, Filipino, Urdu, Bengali, Telugu, Tamil, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Nepali, Sinhala, Burmese, Khmer, Lao, Mongolian, Kazakh, Uzbek, Kyrgyz, Tajik, Azerbaijani, Armenian, Georgian, Tibetan, Pashto, Dari, Odia, Assamese, Uyghur, Turkmen, Tatar
+- **Middle Eastern & African**: Arabic, Hebrew, Persian, Kurdish (Sorani/Kurmanji), Amharic, Somali, Swahili, Yoruba, Igbo, Hausa, Zulu, Afrikaans, Xhosa, Setswana, Sesotho, Oromo, Tigrinya, Wolof, Fulani, Bambara, Akan, Malagasy
+- **Indigenous & Regional**: Quechua, Guaraní, Nahuatl, Maya, Cherokee, Navajo, Maori, Hawaiian, Inuktitut, Lakota, Ojibwe
+- **Constructed & Classical**: Esperanto, Latin, Sanskrit, Classical Chinese
 
 ### 🎨 User Experience
 
@@ -134,7 +135,7 @@ npm start
 ### Landing Page
 
 1. **Explore Features**: Learn about the app's capabilities
-2. **View Supported Languages**: See all 75+ supported languages
+2. **View Supported Languages**: See all 150+ supported languages
 3. **Get Started**: Sign up or sign in to access the services
 
 ### Authentication
@@ -373,7 +374,7 @@ The application has been comprehensively optimized for mobile devices:
 
 ### AI Services Suite
 
-- **Conversation AI**: Interactive voice conversations with AI in 75+ languages
+- **Conversation AI**: Interactive voice conversations with AI in 150+ languages
 - **Grammar Checker**: Intelligent grammar correction and improvement suggestions
 - **Language Translator**: Accurate translation between multiple language pairs
 - **Text Summariser**: AI-powered text summarization for key points extraction

@@ -81,12 +81,13 @@ export default function HeroSection({ characterImage }: HeroSectionProps) {
           <p className="text-base sm:text-lg md:text-xl text-emerald-800 dark:text-emerald-50 font-handwriting">
             Master languages with AI-powered conversations that adapt to your
             skill level. Practice speaking, improve grammar, translate
-            instantly, and unlock fluency with our comprehensive language
+            instantly, and ace TOEFL/IELTS exams with our comprehensive language
             learning platform.
           </p>
         </MotionWrapper>
 
-        <MotionWrapper animationType="scale-in" delay={1100}>
+
+        <MotionWrapper animationType="scale-in" delay={1200}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <StartLearningButton
               className="paper-texture inline-block px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-base sm:text-lg font-handwriting transform hover:scale-105 transition-all shadow-lg hover:shadow-xl"

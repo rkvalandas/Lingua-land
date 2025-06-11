@@ -50,7 +50,7 @@ export default function LanguagesSection() {
           className="text-2xl sm:text-3xl md:text-4xl font-handwriting text-center text-emerald-800 dark:text-emerald-200 mb-8 sm:mb-12"
           style={{ textShadow: "1px 1px 0 rgba(0,50,0,0.1)" }}
         >
-          Master 75+ Languages from Around the World
+          Master 150+ Languages from Around the World
         </h2>
       </MotionWrapper>
 

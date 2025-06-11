@@ -6,7 +6,7 @@ import HeroSection from "./components/HeroSection";
 import FeaturesSection from "./components/FeaturesSection";
 import StatsSection from "./components/StatsSection";
 import ServicesSection from "./components/ServicesSection";
-
+import ExamPrepSection from "./components/ExamPrepSection";
 import LanguagesSection from "./components/LanguagesSection";
 import CtaSection from "./components/CtaSection";
 import Footer from "./components/Footer";
@@ -58,10 +58,16 @@ export default function Home() {
             <ServicesSection />
           </AnimatedSection>
 
+          {/* Exam Prep Section with fade-up animation */}
+          <AnimatedSection>
+            <ExamPrepSection />
+          </AnimatedSection>
+
           {/* Languages Section with slide-in animation */}
           <AnimatedSection>
             <LanguagesSection />
           </AnimatedSection>
+
 
           {/* CTA Section with scale-in animation */}
           <AnimatedSection>

@@ -5,7 +5,7 @@ import MotionWrapper from "./MotionWrapper";
 export default function StatsSection() {
   const stats = [
     {
-      number: "75+",
+      number: "150+",
       label: "Languages Supported",
       icon: (
         <svg
