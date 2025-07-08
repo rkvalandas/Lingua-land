@@ -1,10 +1,5 @@
-import { useState, useRef, useEffect, useReducer } from "react";
-import {
-  AppState,
-  AIMessage,
-  ConversationMessage,
-  ConversationResponse,
-} from "../types";
+import { useState, useRef, useEffect, useReducer, useCallback } from "react";
+import { AIMessage, ConversationMessage, ConversationResponse } from "../types";
 import { appReducer } from "./appReducer";
 import {
   getSpeechRecognitionLang,
@@ -54,9 +49,33 @@ declare global {
 }
 
 export function useConversationState(selectedLanguage: string) {
+  // Use ref for conversation to avoid state updates triggering re-renders
   const [conversation, setConversation] = useState<
     (ConversationMessage | AIMessage)[]
   >([]);
+  const conversationRef = useRef<(ConversationMessage | AIMessage)[]>(conversation);
+
+  // Update both state and ref when conversation changes
+  const updateConversation = useCallback(
+    (
+      updater:
+        | ((prev: (ConversationMessage | AIMessage)[]) => (ConversationMessage | AIMessage)[])
+        | (ConversationMessage | AIMessage)[]
+    ) => {
+      setConversation((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater;
+        conversationRef.current = next;
+        return next;
+      });
+    },
+    []
+  );
+
+  // Ensure conversation ref is always in sync with state
+  useEffect(() => {
+    conversationRef.current = conversation;
+  }, [conversation]);
+
   const { token } = useAuth();
 
   // Use reducer for related state
@@ -75,6 +94,46 @@ export function useConversationState(selectedLanguage: string) {
   const conversationIdRef = useRef<number | null>(null);
   const recognitionIsRunningRef = useRef(false);
   const conversationContainerRef = useRef<HTMLDivElement>(null);
+
+  // Browser's built-in TTS fallback
+  const browserTTS = useCallback(
+    (text: string, language: string) => {
+      if (!window.speechSynthesis) return;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = getSpeechRecognitionLang(language);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      utterance.onstart = () => {
+        dispatch({ type: "START_SPEAKING" });
+        if (recognitionRef.current && state.isListening) {
+          recognitionRef.current.stop();
+        }
+      };
+
+      utterance.onend = () => {
+        dispatch({ type: "STOP_SPEAKING" });
+        if (state.autoListen && recognitionRef.current && !state.isProcessing) {
+          setTimeout(() => {
+            try {
+              recognitionRef.current?.start();
+            } catch (error) {
+              console.error("Failed to restart recognition after TTS:", error);
+            }
+          }, 500);
+        }
+      };
+
+      utterance.onerror = (error) => {
+        console.error("Browser TTS error:", error);
+        dispatch({ type: "STOP_SPEAKING" });
+      };
+
+      window.speechSynthesis.speak(utterance);
+    },
+    [state.isListening, state.autoListen, state.isProcessing, dispatch]
+  );
 
   // Initialize speech recognition
   useEffect(() => {
@@ -285,13 +344,13 @@ export function useConversationState(selectedLanguage: string) {
     };
 
     const handleError = (e: Event) => {
-      console.error("Audio playback error:", e);
+      console.error("Audio playback error:");
       dispatch({ type: "STOP_SPEAKING" });
 
       // Try fallback TTS
       const lastAiMessage = conversation[conversation.length - 1];
       if (lastAiMessage && lastAiMessage.type === "ai") {
-        useBrowserTTS(lastAiMessage.text, selectedLanguage);
+        browserTTS(lastAiMessage.text, selectedLanguage);
       }
     };
 
@@ -307,13 +366,14 @@ export function useConversationState(selectedLanguage: string) {
       audioElement.removeEventListener("error", handleError);
     };
   }, [
-    audioRef.current,
     state.autoListen,
     state.isProcessing,
     state.isListening,
     state.isSpeaking,
     conversation,
     selectedLanguage,
+    browserTTS,
+    dispatch,
   ]);
 
   // Load existing conversation when language or token changes
@@ -339,7 +399,7 @@ export function useConversationState(selectedLanguage: string) {
         if (!response.ok) {
           console.log(`No existing conversation found for ${selectedLanguage}`);
           conversationIdRef.current = null;
-          setConversation([]);
+          updateConversation([]);
           return;
         }
 
@@ -355,20 +415,20 @@ export function useConversationState(selectedLanguage: string) {
             ...(msg.is_user ? {} : { audio: undefined }), // AI messages won't have audio from DB
           }));
 
-          setConversation(conversationMessages);
+          updateConversation(conversationMessages);
           console.log(
             `Loaded ${data.messages.length} messages from existing ${selectedLanguage} conversation`
           );
         } else {
           // No existing conversation or messages for this language
           conversationIdRef.current = null;
-          setConversation([]);
+          updateConversation([]);
           console.log(`No messages found for ${selectedLanguage} conversation`);
         }
       } catch (error) {
         console.error("Failed to load existing conversation:", error);
         conversationIdRef.current = null;
-        setConversation([]);
+        updateConversation([]);
       }
     }
 
@@ -394,145 +454,118 @@ export function useConversationState(selectedLanguage: string) {
   useEffect(() => {
     if (conversationContainerRef.current) {
       const container = conversationContainerRef.current;
-      container.scrollTop = container.scrollHeight;
+      // Use requestAnimationFrame for smoother scrolling
+      requestAnimationFrame(() => {
+        container.scrollTop = container.scrollHeight;
+      });
     }
   }, [conversation]);
 
   // Process transcript and get AI response
-  const processTranscript = async (text: string): Promise<void> => {
-    if (!text.trim() || !token) return;
+  const processTranscript = useCallback(
+    async (text: string): Promise<void> => {
+      if (!text.trim() || !token) return;
 
-    try {
-      dispatch({ type: "START_PROCESSING" });
-
-      // 1. Get AI response
-      const API_BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const conversationResponse = await fetch(
-        `${API_BASE_URL}/api/conversation`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            text,
-            language: selectedLanguage,
-          }),
-        }
-      );
-
-      if (!conversationResponse.ok)
-        throw new Error(`Error: ${conversationResponse.status}`);
-
-      const data: ConversationResponse = await conversationResponse.json();
-
-      // Add messages to conversation immediately
-      setConversation((prev) => [
-        ...prev,
-        { type: "user", text: data.userText },
-        { type: "ai", text: data.aiResponse },
-      ]);
-
-      // 2. Request TTS
       try {
-        console.log("Requesting TTS for AI response");
+        dispatch({ type: "START_PROCESSING" });
 
-        const ttsResponse = await fetch(`${API_BASE_URL}/api/tts`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            text: data.aiResponse,
-            voice: getVoiceForLanguage(selectedLanguage),
-          }),
-        });
-
-        if (!ttsResponse.ok)
-          throw new Error(`TTS API returned ${ttsResponse.status}`);
-
-        // Parse the response with audio data
-        const audioData = await ttsResponse.json();
-
-        if (!audioData.audioData) throw new Error("No audio data received");
-
-        console.log("Received audio data URI");
-
-        // Store the data URI for replay
-        setConversation((prev) => {
-          const updated = [...prev];
-          const lastMessage = updated[updated.length - 1];
-          if (lastMessage && lastMessage.type === "ai") {
-            lastMessage.audio = audioData.audioData;
+        // 1. Get AI response
+        const API_BASE_URL =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const conversationResponse = await fetch(
+          `${API_BASE_URL}/api/conversation`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              text,
+              language: selectedLanguage,
+            }),
           }
-          return updated;
-        });
+        );
 
-        // Play the audio
-        if (audioRef.current) {
-          // Set source and play
-          audioRef.current.src = audioData.audioData;
+        if (!conversationResponse.ok)
+          throw new Error(`Error: ${conversationResponse.status}`);
 
-          try {
-            await audioRef.current.play();
-            console.log("Audio playing successfully");
-          } catch (playError) {
-            console.error("Audio play error:", playError);
-            useBrowserTTS(data.aiResponse, selectedLanguage);
+        const data: ConversationResponse = await conversationResponse.json();
+
+        // Add messages to conversation immediately - using a single state update
+        setConversation((prev) => [
+          ...prev,
+          { type: "user", text: data.userText },
+          { type: "ai", text: data.aiResponse },
+        ]);
+
+        // 2. Request TTS
+        try {
+          console.log("Requesting TTS for AI response");
+
+          const ttsResponse = await fetch(`${API_BASE_URL}/api/tts`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              text: data.aiResponse,
+              voice: getVoiceForLanguage(selectedLanguage),
+            }),
+          });
+
+          if (!ttsResponse.ok)
+            throw new Error(`TTS API returned ${ttsResponse.status}`);
+
+          // Parse the response with audio data
+          const audioData = await ttsResponse.json();
+
+          if (!audioData.audioData) throw new Error("No audio data received");
+
+          console.log("Received audio data URI");
+
+          // Store the data URI for replay - using a memoized function
+          setConversation((prev) => {
+            // Use immutable update pattern to prevent unnecessary re-renders
+            const updated = [...prev];
+            const lastMessage = updated[updated.length - 1];
+            if (lastMessage && lastMessage.type === "ai") {
+              // Only update if necessary
+              if (lastMessage.audio !== audioData.audioData) {
+                lastMessage.audio = audioData.audioData;
+              }
+            }
+            return updated;
+          });
+
+          // Play the audio
+          if (audioRef.current) {
+            // Set source and play
+            audioRef.current.src = audioData.audioData;
+
+            try {
+              await audioRef.current.play();
+              console.log("Audio playing successfully");
+            } catch (playError) {
+              console.error("Audio play error:", playError);
+              browserTTS(data.aiResponse, selectedLanguage);
+            }
+          } else {
+            throw new Error("Audio element not available");
           }
-        } else {
-          throw new Error("Audio element not available");
+        } catch (ttsError) {
+          console.error("TTS processing failed:", ttsError);
+          browserTTS(data.aiResponse, selectedLanguage);
         }
-      } catch (ttsError) {
-        console.error("TTS processing failed:", ttsError);
-        useBrowserTTS(data.aiResponse, selectedLanguage);
+      } catch (error) {
+        console.error("Error processing transcript:", error);
+      } finally {
+        dispatch({ type: "STOP_PROCESSING" });
       }
-    } catch (error) {
-      console.error("Error processing transcript:", error);
-    } finally {
-      dispatch({ type: "STOP_PROCESSING" });
-    }
-  };
-
-  // Browser's built-in TTS fallback
-  const useBrowserTTS = (text: string, language: string) => {
-    if (!window.speechSynthesis) return;
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = getSpeechRecognitionLang(language);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-
-    utterance.onstart = () => {
-      dispatch({ type: "START_SPEAKING" });
-      if (recognitionRef.current && state.isListening) {
-        recognitionRef.current.stop();
-      }
-    };
-
-    utterance.onend = () => {
-      dispatch({ type: "STOP_SPEAKING" });
-      if (state.autoListen && recognitionRef.current && !state.isProcessing) {
-        setTimeout(() => {
-          try {
-            recognitionRef.current?.start();
-          } catch (e) {
-            console.error("Failed to restart recognition after TTS:", e);
-          }
-        }, 500);
-      }
-    };
-
-    utterance.onerror = (error) => {
-      console.error("Browser TTS error:", error);
-      dispatch({ type: "STOP_SPEAKING" });
-    };
-
-    window.speechSynthesis.speak(utterance);
-  };
+    },
+    [token, selectedLanguage, dispatch, browserTTS]
+  );
 
   // Toggle conversation mode
   const toggleRecordingMode = () => {
@@ -589,7 +622,7 @@ export function useConversationState(selectedLanguage: string) {
       audioRef.current.src = message.audio;
       audioRef.current.play().catch((error) => {
         console.error("Replay failed:", error);
-        useBrowserTTS(message.text, selectedLanguage);
+        browserTTS(message.text, selectedLanguage);
       });
     }
   };

@@ -43,7 +43,6 @@ export default function MotionSection({
   childrenClassName = "",
   id,
   staggered = false,
-  staggerDelay = 150,
   animationType = "fade-up",
 }: MotionSectionProps) {
   if (!staggered) {

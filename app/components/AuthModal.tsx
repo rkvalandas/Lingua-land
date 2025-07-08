@@ -55,7 +55,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       if (!error) {
         onClose();
       }
-    } catch (error) {
+    } catch {
       // Error is handled by the auth context
     }
   };

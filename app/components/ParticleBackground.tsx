@@ -56,10 +56,10 @@ export default function ParticleBackground() {
         className="absolute inset-0 z-0 dark:hidden"
         style={{
           background: `
-            radial-gradient(circle at 20% 50%, rgba(254, 240, 138, 0.6) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(254, 240, 138, 0.5) 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, rgba(254, 240, 138, 0.4) 0%, transparent 50%),
-            linear-gradient(135deg, rgba(254, 240, 138, 0.7) 0%, rgba(254, 240, 138, 0.5) 100%)
+            radial-gradient(circle at 20% 50%, rgba(254, 240, 138, 0.5) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(254, 240, 138, 0.4) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(254, 240, 138, 0.3) 0%, transparent 50%),
+            linear-gradient(135deg, rgba(254, 240, 138, 0.6) 0%, rgba(254, 240, 138, 0.4) 100%)
           `,
           filter: "url(#paper-filter)",
           backgroundSize: "200% 200%, 300% 300%, 250% 250%, 100% 100%",
@@ -74,10 +74,10 @@ export default function ParticleBackground() {
         className="absolute inset-0 z-0 hidden dark:block"
         style={{
           background: `
-            radial-gradient(circle at 20% 50%, rgba(254, 240, 138, 0.6) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(254, 240, 138, 0.5) 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, rgba(254, 240, 138, 0.4) 0%, transparent 50%),
-            linear-gradient(135deg, rgba(254, 240, 138, 0.7) 0%, rgba(254, 240, 138, 0.5) 100%)
+            radial-gradient(circle at 20% 50%, rgba(254, 240, 138, 0.5) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(254, 240, 138, 0.4) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(254, 240, 138, 0.3) 0%, transparent 50%),
+            linear-gradient(135deg, rgba(254, 240, 138, 0.5) 0%, rgba(254, 240, 138, 0.3) 100%)
           `,
           filter: "url(#paper-filter)",
           backgroundSize: "200% 200%, 300% 300%, 250% 250%, 100% 100%",
@@ -89,35 +89,35 @@ export default function ParticleBackground() {
 
       {/* Additional paper texture overlay with enhanced darkness for depth */}
       <div
-        className="absolute inset-0 z-0 opacity-40"
+        className="absolute inset-0 z-0 opacity-60"
         style={{
           background: `
             repeating-linear-gradient(
               0deg,
               transparent,
               transparent 1.5px,
-              rgba(139, 69, 19, 0.1) 1.5px,
-              rgba(139, 69, 19, 0.1) 3px
+              rgba(139, 69, 19, 0.15) 1.5px,
+              rgba(139, 69, 19, 0.15) 3px
             ),
             repeating-linear-gradient(
               90deg,
               transparent,
               transparent 1.5px,
-              rgba(139, 69, 19, 0.1) 1.5px,
-              rgba(139, 69, 19, 0.1) 3px
+              rgba(139, 69, 19, 0.15) 1.5px,
+              rgba(139, 69, 19, 0.15) 3px
             ),
-                        linear-gradient(135deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.04) 100%),
-            radial-gradient(ellipse at center, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.05) 100%)
+                        linear-gradient(135deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.06) 100%),
+            radial-gradient(ellipse at center, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.07) 100%)
 
           `,
         }}
       />
 
       {/* Dark overlay for dark mode only */}
-      <div className="absolute inset-0 z-0 hidden dark:block bg-black/30"></div>
+      <div className="absolute inset-0 z-0 hidden dark:block bg-black/40"></div>
 
       {/* Gradient overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent dark:from-transparent dark:to-lime-900/80"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 dark:from-transparent dark:via-black/15 dark:to-lime-900/80"></div>
 
       {/* Floating particles with improved performance */}
       {particles.map((particle) => (

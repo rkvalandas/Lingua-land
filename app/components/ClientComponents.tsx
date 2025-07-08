@@ -2,7 +2,6 @@
 
 import { useState, Suspense, useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import dynamic from "next/dynamic";
 import { scrollToElement } from "../utils/scrollUtils";
 
@@ -62,16 +61,14 @@ export function ClientNavigation({ logo }: { logo: string }) {
     >
       <div className="flex items-center transform rotate-[-0.5deg] group">
         <div className="relative w-12 h-12 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full flex items-center justify-center bg-gradient-to-br p-1 group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-
-            <Image
-              src={logo}
-              alt="Lingua Land logo"
-              width={80}
-              height={80}
-              className="w-full h-full object-contain z-10 group-hover:scale-110 transition-transform duration-300"
-              priority
-            />
-
+          <Image
+            src={logo}
+            alt="Lingua Land logo"
+            width={80}
+            height={80}
+            className="w-full h-full object-contain z-10 group-hover:scale-110 transition-transform duration-300"
+            priority
+          />
         </div>
         <div className="ml-3 sm:ml-4">
           <span

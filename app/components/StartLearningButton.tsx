@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
 import { useConversationManager } from "../services/hooks/useConversationManager";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface StartLearningButtonProps {
   className?: string;

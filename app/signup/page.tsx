@@ -37,8 +37,10 @@ export default function SignUp() {
     try {
       await register(username, email, password);
       router.push("/services");
-    } catch (err: any) {
-      setError(err.message || "An error occurred during sign up");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "An error occurred during sign up"
+      );
     } finally {
       setIsLoading(false);
     }

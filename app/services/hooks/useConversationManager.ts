@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
 export interface ConversationSummary {
@@ -15,7 +15,7 @@ export function useConversationManager() {
   const { token } = useAuth();
 
   // Load all conversations for the user
-  const loadConversations = async () => {
+  const loadConversations = useCallback(async () => {
     if (!token) return;
 
     setIsLoading(true);
@@ -42,7 +42,7 @@ export function useConversationManager() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [token]);
 
   // Create a new conversation
   const createNewConversation = async (
@@ -86,9 +86,11 @@ export function useConversationManager() {
     try {
       const API_BASE_URL =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const url = `${API_BASE_URL}/api/conversation/${encodeURIComponent(language)}`;
+      const url = `${API_BASE_URL}/api/conversation/${encodeURIComponent(
+        language
+      )}`;
       console.log("Making DELETE request to:", url);
-      
+
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -97,7 +99,7 @@ export function useConversationManager() {
       });
 
       console.log("Delete response status:", response.status);
-      
+
       if (response.ok) {
         console.log("Delete request successful, updating local state");
         // Remove from local state
@@ -183,7 +185,7 @@ export function useConversationManager() {
     } else {
       setConversations([]);
     }
-  }, [token]);
+  }, [token, loadConversations]);
 
   return {
     conversations,

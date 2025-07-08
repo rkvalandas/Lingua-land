@@ -23,7 +23,7 @@ export default function RecordingButton({
     <button
       onClick={toggleRecordingMode}
       disabled={isProcessing}
-      className={`rounded-full min-w-[90px] min-h-[100px] flex items-center justify-center transition-all duration-300 transform hover:scale-105 ${
+      className={`rounded-full min-w-[100px] min-h-[100px] flex items-center justify-center transition-all duration-300 transform hover:scale-105 ${
         isListening
           ? "bg-gradient-to-r from-blue-400 to-blue-600 border-4 border-blue-300"
           : isSpeaking

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ServiceState } from "../hooks/useAIServices";
 import { languages } from "../data/languages";
 import MarkdownViewer from "./MarkdownViewer";
@@ -9,7 +8,7 @@ interface AIServiceUIProps {
   placeholder: string;
   buttonText: string;
   state: ServiceState;
-  onProcess: (text: string, ...args: any[]) => void;
+  onProcess: (text: string, ...args: string[]) => void;
   onInputChange: (text: string) => void;
   onLanguageChange?: (language: string) => void;
   onSourceLanguageChange?: (language: string) => void;

@@ -550,7 +550,64 @@ html {
   animation: floatingElement 10s ease-in-out infinite;
 }
 
-/* Additional scroll and performance optimizations */
+/* Custom scrollbar styles for sidebar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 158, 11, 0.4) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.4);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.6);
+}
+
+.dark .scrollbar-thin {
+  scrollbar-color: rgba(245, 158, 11, 0.6) transparent;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.6);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.8);
+}
+
+/* Additional paper-like texture class enhancement */
+.paper-texture {
+  position: relative;
+}
+
+.paper-texture::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.02) 1px,
+    rgba(0, 0, 0, 0.02) 2px
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {

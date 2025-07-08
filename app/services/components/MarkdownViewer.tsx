@@ -79,7 +79,12 @@ export default function MarkdownViewer({
               {children}
             </blockquote>
           ),
-          code: ({ inline, className, children, ...props }: any) => {
+          code: ({
+            inline,
+            className,
+            children,
+            ...props
+          }: React.ComponentProps<"code"> & { inline?: boolean }) => {
             if (inline) {
               return (
                 <code

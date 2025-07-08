@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import MotionWrapper from "./MotionWrapper";
 
 export default function LanguagesSection() {

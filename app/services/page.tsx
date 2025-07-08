@@ -1,16 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import LanguageSelector from "./components/LanguageSelector";
 import ConversationContainer from "./components/ConversationContainer";
 import UserInputArea from "./components/UserInputArea";
 import AIServiceUI from "./components/AIServiceUI";
 import { useConversationState } from "./hooks/useConversationState";
 import { useAIServices } from "./hooks/useAIServices";
-import { languages } from "./data/languages";
 
-export default function Services() {
+function ServicesContent() {
   const searchParams = useSearchParams();
   const selectedService = searchParams.get("service") || "conversation";
   const selectedLanguage = searchParams.get("language") || "English";
@@ -21,7 +19,6 @@ export default function Services() {
     conversation,
     conversationContainerRef,
     audioRef,
-    processTranscript,
     toggleRecordingMode,
     playMessageAudio,
   } = useConversationState(selectedLanguage);
@@ -46,28 +43,32 @@ export default function Services() {
     switch (selectedService) {
       case "conversation":
         return (
-          <div className="h-full flex flex-col relative p-3 sm:p-6">
+          <div className="h-full flex flex-col relative p-3 sm:pl-6">
             {/* Use consistent background styling with landing page */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent dark:from-transparent to-amber-100/30 dark:to-lime-900/50"></div>
 
             {/* Practice Interface */}
-            <div className="relative z-10 flex-1 flex flex-col">
+            <div className="relative z-10 flex-1 flex flex-col h-full">
               {/* Conversation Container */}
-              <ConversationContainer
-                ref={conversationContainerRef}
-                conversation={conversation}
-                isListening={state.isListening}
-                autoListen={state.autoListen}
-                playMessageAudio={playMessageAudio}
-              />
+              <div className="flex-1 min-h-0 overflow-hidden">
+                <ConversationContainer
+                  ref={conversationContainerRef}
+                  conversation={conversation}
+                  isListening={state.isListening}
+                  autoListen={state.autoListen}
+                  playMessageAudio={playMessageAudio}
+                />
+              </div>
 
               {/* User Input Area */}
-              <UserInputArea
-                state={state}
-                transcript={state.transcript}
-                selectedLanguage={selectedLanguage}
-                toggleRecordingMode={toggleRecordingMode}
-              />
+              <div className="flex-shrink-0">
+                <UserInputArea
+                  state={state}
+                  transcript={state.transcript}
+                  selectedLanguage={selectedLanguage}
+                  toggleRecordingMode={toggleRecordingMode}
+                />
+              </div>
 
               {/* Hidden audio element for TTS */}
               <audio ref={audioRef} style={{ display: "none" }} />
@@ -203,5 +204,19 @@ export default function Services() {
         </div>
       )}
     </>
+  );
+}
+
+export default function Services() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          Loading...
+        </div>
+      }
+    >
+      <ServicesContent />
+    </Suspense>
   );
 }

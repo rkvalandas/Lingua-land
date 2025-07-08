@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
 } from "react";
 
@@ -61,6 +62,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+  const fetchUserData = useCallback(
+    async (authToken: string) => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+          setSettings(data.settings);
+        } else {
+          // Token is invalid
+          localStorage.removeItem("auth_token");
+          setToken(null);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+        localStorage.removeItem("auth_token");
+        setToken(null);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [API_BASE_URL]
+  );
+
   useEffect(() => {
     // Check for existing token on app load
     const savedToken = localStorage.getItem("auth_token");
@@ -70,33 +100,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } else {
       setIsLoading(false);
     }
-  }, []);
-
-  const fetchUserData = async (authToken: string) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-        setSettings(data.settings);
-      } else {
-        // Token is invalid
-        localStorage.removeItem("auth_token");
-        setToken(null);
-      }
-    } catch (error) {
-      console.error("Failed to fetch user data:", error);
-      localStorage.removeItem("auth_token");
-      setToken(null);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [fetchUserData]);
 
   const login = async (email: string, password: string) => {
     setError(null);
@@ -123,7 +127,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         setError(data.error || "Login failed");
       }
-    } catch (error) {
+    } catch {
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
@@ -163,7 +167,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         setError(data.error || "Registration failed");
       }
-    } catch (error) {
+    } catch {
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
@@ -196,7 +200,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const data = await response.json();
         setError(data.error || "Failed to update settings");
       }
-    } catch (error) {
+    } catch {
       setError("Network error. Please try again.");
     }
   };

@@ -13,31 +13,36 @@ export default function TranscriptDisplay({
   isSpeaking,
   isProcessing,
   autoListen,
-  selectedLanguage
+  selectedLanguage,
 }: TranscriptDisplayProps) {
   return (
     <div
-      className="w-full mr-4 min-h-[100px] p-4 rounded-2xl bg-yellow-100 dark:bg-yellow-700 border-2 border-amber-400 dark:border-amber-500 transition-all duration-300 relative"
-      style={{ boxShadow: "inset 0 0 15px rgba(132, 204, 22, 0.2)" }}
+      className="w-full min-h-[100px] p-5 rounded-full bg-gradient-to-br from-yellow-50/95 to-amber-50/95 dark:from-yellow-800/40 dark:to-amber-900/40 backdrop-blur-lg border-2 border-amber-300/70 dark:border-amber-400/50 transition-all duration-300 relative shadow-lg"
+      style={{
+        boxShadow:
+          "0 8px 25px rgba(245, 158, 11, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+      }}
     >
       {transcript ? (
-        <p className="text-emerald-800 dark:text-emerald-100 break-words font-handwriting">
-          {transcript}
-        </p>
+        <div className="backdrop-blur-sm bg-white/20 dark:bg-black/20 rounded-2xl p-4 border border-amber-300/40 dark:border-amber-400/30">
+          <p className="text-emerald-800 dark:text-emerald-100 break-words font-handwriting text-lg leading-relaxed">
+            {transcript}
+          </p>
+        </div>
       ) : (
-        <div className="flex items-center justify-center pt-5 h-full">
+        <div className="flex items-center justify-center pt-2 h-full">
           <p
-            className={`text-center font-handwriting ${
+            className={`text-center font-handwriting text-lg font-medium ${
               isListening
-                ? "text-blue-600 dark:text-blue-200"
+                ? "text-blue-600 dark:text-blue-300"
                 : isSpeaking
-                ? "text-emerald-600 dark:text-emerald-200"
+                ? "text-emerald-600 dark:text-emerald-300"
                 : isProcessing
-                ? "text-amber-600 dark:text-amber-200"
+                ? "text-amber-600 dark:text-amber-300"
                 : autoListen
-                ? "text-purple-600 dark:text-purple-200"
-                : "text-emerald-700 dark:text-emerald-200"
-            } transform rotate-[-0.5deg]`}
+                ? "text-purple-600 dark:text-purple-300"
+                : "text-emerald-700 dark:text-emerald-300"
+            } transform rotate-[-0.5deg] drop-shadow-sm`}
           >
             {isListening
               ? "The spirits are listening... speak now"
@@ -53,10 +58,10 @@ export default function TranscriptDisplay({
       )}
 
       {isListening && (
-        <div className="absolute top-3 right-3">
-          <span className="flex h-3 w-3">
-            <span className="animate-ping absolute h-3 w-3 rounded-full bg-blue-400 opacity-75"></span>
-            <span className="relative rounded-full h-3 w-3 bg-blue-500"></span>
+        <div className="absolute top-4 right-4">
+          <span className="flex h-4 w-4">
+            <span className="animate-ping absolute h-4 w-4 rounded-full bg-blue-400 opacity-75"></span>
+            <span className="relative rounded-full h-4 w-4 bg-blue-500 shadow-lg"></span>
           </span>
         </div>
       )}

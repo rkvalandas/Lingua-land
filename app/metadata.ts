@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Lingua Land - AI Language Learning Companion",
   description:
     "Immerse yourself in a magical language learning journey with our AI companion that adapts to your skill level.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://lingualand.app"
+  ),
   keywords: [
     "language learning",
     "AI companion",
