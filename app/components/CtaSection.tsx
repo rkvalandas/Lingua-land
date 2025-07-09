@@ -13,9 +13,9 @@ export default function CtaSection() {
   return (
     <div className="w-full mt-16 sm:mt-24 mb-8">
       <MotionWrapper animationType="scale-in">
-        <div className="relative overflow-hidden bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600 dark:from-amber-700 dark:via-amber-800 dark:to-amber-900 rounded-3xl p-8 sm:p-12 backdrop-blur-sm shadow-2xl border border-amber-400/30 dark:border-amber-600/30">
+        <div className="relative overflow-hidden bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600 dark:from-amber-700 dark:via-amber-800 dark:to-amber-900 rounded-3xl p-8 sm:p-12 backdrop-blur-sm shadow-2xl border border-amber-400/50 dark:border-amber-600/50">
           {/* Background decorative elements */}
-          <div className="absolute inset-0 opacity-20 dark:opacity-15">
+          <div className="absolute inset-0 opacity-30 dark:opacity-25">
             <div className="absolute top-10 left-10 w-20 h-20 bg-white dark:bg-white/80 rounded-full animate-pulse"></div>
             <div className="absolute top-32 right-16 w-16 h-16 bg-emerald-300 dark:bg-emerald-400 rounded-full animate-bounce"></div>
             <div className="absolute bottom-16 left-20 w-12 h-12 bg-teal-300 dark:bg-teal-400 rounded-full animate-pulse"></div>
@@ -141,19 +141,25 @@ export default function CtaSection() {
               <div className="mt-8 pt-8 border-t border-amber-500/20 dark:border-amber-700/20">
                 <div className="flex flex-wrap justify-center items-center gap-6 text-white/90">
                   <div className="flex items-center gap-2 px-3 py-1 bg-amber-600/20 dark:bg-amber-800/30 rounded-full border border-amber-500/20 dark:border-amber-700/30 backdrop-blur-sm">
-                    <span className="text-emerald-300 dark:text-emerald-400">✓</span>
+                    <span className="text-emerald-300 dark:text-emerald-400">
+                      ✓
+                    </span>
                     <span className="text-sm font-medium">
                       100% Free to Start
                     </span>
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1 bg-amber-600/20 dark:bg-amber-800/30 rounded-full border border-amber-500/20 dark:border-amber-700/30 backdrop-blur-sm">
-                    <span className="text-emerald-300 dark:text-emerald-400">🔒</span>
+                    <span className="text-emerald-300 dark:text-emerald-400">
+                      🔒
+                    </span>
                     <span className="text-sm font-medium">
                       Secure & Private
                     </span>
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1 bg-amber-600/20 dark:bg-amber-800/30 rounded-full border border-amber-500/20 dark:border-amber-700/30 backdrop-blur-sm">
-                    <span className="text-emerald-300 dark:text-emerald-400">🧠</span>
+                    <span className="text-emerald-300 dark:text-emerald-400">
+                      🧠
+                    </span>
                     <span className="text-sm font-medium">
                       AI-Powered Learning
                     </span>

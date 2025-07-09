@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-
 // Static components
 import StructuredData from "./components/StructuredData";
 import HeroSection from "./components/HeroSection";

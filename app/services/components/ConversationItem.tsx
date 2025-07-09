@@ -48,18 +48,18 @@ export default function ConversationItem({
     <div
       className={`relative w-full rounded-2xl transition-all duration-300 group ${
         isSelected
-          ? "bg-gradient-to-r from-emerald-200 via-emerald-100 to-emerald-200 dark:from-emerald-700 dark:via-emerald-600 dark:to-emerald-700 shadow-lg"
-          : "hover:bg-gradient-to-r hover:from-emerald-50 hover:via-white/30 hover:to-emerald-50 dark:hover:from-emerald-800/20 dark:hover:via-emerald-700/20 dark:hover:to-emerald-800/20 shadow-md hover:shadow-lg"
+          ? "bg-gradient-to-r from-amber-200/95 via-amber-100/95 to-amber-200/95 dark:from-amber-700/95 dark:via-amber-600/95 dark:to-amber-700/95 shadow-lg"
+          : "hover:bg-gradient-to-r hover:from-amber-100/80 hover:via-yellow-50/80 hover:to-amber-100/80 dark:hover:from-amber-800/80 dark:hover:via-amber-700/80 dark:hover:to-amber-800/80 shadow-md hover:shadow-lg"
       }`}
       style={{
         borderRadius: "14px 10px 12px 8px",
         boxShadow: isSelected
-          ? "0 6px 20px rgba(16,185,129,0.2), inset 0 1px 0 rgba(255,255,255,0.2)"
+          ? "0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)"
           : "0 3px 10px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.1)",
         minHeight: "52px",
         border: isSelected
-          ? "2px solid rgba(16,185,129,0.3)"
-          : "1px solid rgba(245,158,11,0.15)",
+          ? "2px solid rgba(259,191,39,0.7)"
+          : "1px solid rgba(251,191,36,0.6)",
         backdropFilter: "blur(8px)",
       }}
     >
@@ -77,7 +77,7 @@ export default function ConversationItem({
         }}
         className="flex items-center gap-3 px-4 py-3 text-left cursor-pointer touch-manipulation active:scale-95 w-full relative"
       >
-        <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500/95 to-emerald-700/95 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm border border-emerald-400/80 dark:border-emerald-500/80">
           <ConversationIcon />
         </div>
         <div className="flex-1 min-w-0">
@@ -87,7 +87,7 @@ export default function ConversationItem({
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full px-3 py-2 text-sm border-2 border-emerald-300/60 dark:border-emerald-600/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/90 dark:bg-slate-600/90 dark:text-emerald-100 backdrop-blur-sm"
+                className="w-full px-3 py-2 text-sm border-2 border-amber-400/90 dark:border-amber-600/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-white/90 dark:bg-slate-600/90 dark:text-amber-100 backdrop-blur-sm"
                 placeholder="Enter conversation title"
                 autoFocus
                 onKeyDown={(e) => {

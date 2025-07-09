@@ -139,36 +139,36 @@ export default function ServicesSection() {
     const colorMap = {
       teal: {
         cardBg:
-          "from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20",
-        border: "border-teal-200 dark:border-teal-700",
+          "from-teal-400/40 via-teal-500/40 to-cyan-600/40 dark:from-teal-700/50 dark:via-teal-800/50 dark:to-cyan-900/50",
+        border: "border-teal-400/50 dark:border-teal-600/50",
         iconBg: "bg-teal-100 dark:bg-teal-800",
         iconText: "text-teal-600 dark:text-teal-300",
       },
       emerald: {
         cardBg:
-          "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
-        border: "border-emerald-200 dark:border-emerald-700",
+          "from-emerald-400/40 via-emerald-500/40 to-teal-600/40 dark:from-emerald-700/50 dark:via-emerald-800/50 dark:to-teal-900/50",
+        border: "border-emerald-400/50 dark:border-emerald-600/50",
         iconBg: "bg-emerald-100 dark:bg-emerald-800",
         iconText: "text-emerald-600 dark:text-emerald-300",
       },
       blue: {
         cardBg:
-          "from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20",
-        border: "border-blue-200 dark:border-blue-700",
+          "from-blue-400/40 via-blue-500/40 to-indigo-600/40 dark:from-blue-700/50 dark:via-blue-800/50 dark:to-indigo-900/50",
+        border: "border-blue-400/50 dark:border-blue-600/50",
         iconBg: "bg-blue-100 dark:bg-blue-800",
         iconText: "text-blue-600 dark:text-blue-300",
       },
       purple: {
         cardBg:
-          "from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20",
-        border: "border-purple-200 dark:border-purple-700",
+          "from-purple-400/40 via-purple-500/40 to-pink-600/40 dark:from-purple-700/50 dark:via-purple-800/50 dark:to-pink-900/50",
+        border: "border-purple-400/50 dark:border-purple-600/50",
         iconBg: "bg-purple-100 dark:bg-purple-800",
         iconText: "text-purple-600 dark:text-purple-300",
       },
       amber: {
         cardBg:
-          "from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20",
-        border: "border-amber-200 dark:border-amber-700",
+          "from-amber-400/40 via-amber-500/40 to-orange-600/40 dark:from-amber-700/50 dark:via-amber-800/50 dark:to-orange-900/50",
+        border: "border-amber-400/50 dark:border-amber-600/50",
         iconBg: "bg-amber-100 dark:bg-amber-800",
         iconText: "text-amber-600 dark:text-amber-300",
       },
@@ -180,18 +180,18 @@ export default function ServicesSection() {
     <div className="w-full mt-16 sm:mt-24 mb-12 sm:mb-16">
       <MotionWrapper animationType="fade-up">
         <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 rounded-full border border-blue-200 dark:border-blue-700 mb-6">
-            <span className="text-blue-600 dark:text-blue-400 text-sm font-medium">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-amber-500/40 via-yellow-500/40 to-amber-600/40 dark:from-amber-700/50 dark:via-amber-800/50 dark:to-amber-900/50 rounded-full border border-amber-400/50 dark:border-amber-600/50 mb-6 shadow-lg backdrop-blur-md">
+            <span className="text-emerald-700 dark:text-emerald-300 text-sm font-medium">
               🚀 AI Services
             </span>
           </div>
           <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-handwriting text-emerald-800 dark:text-emerald-200 transform rotate-[0.5deg]"
+            className="text-3xl sm:text-4xl md:text-5xl font-handwriting text-emerald-700 dark:text-emerald-300 transform rotate-[0.5deg]"
             style={{ textShadow: "2px 2px 4px rgba(0,50,0,0.15)" }}
           >
             Powerful Learning Tools
           </h2>
-          <p className="text-lg sm:text-xl text-emerald-700 dark:text-emerald-300 font-handwriting mt-4 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-emerald-600 dark:text-emerald-200 font-handwriting mt-4 max-w-3xl mx-auto">
             Discover our comprehensive suite of AI-powered tools designed to
             accelerate your language learning journey
           </p>
@@ -208,12 +208,12 @@ export default function ServicesSection() {
               delay={150 + index * 100}
             >
               <div
-                className={`group relative bg-gradient-to-br ${colors.cardBg} rounded-3xl p-8 backdrop-blur-sm transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 border ${colors.border} h-full flex flex-col shadow-lg hover:shadow-2xl`}
+                className={`group relative bg-gradient-to-br ${colors.cardBg} rounded-3xl p-8 backdrop-blur-sm transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 border ${colors.border} h-full flex flex-col shadow-xl hover:shadow-2xl`}
               >
                 {/* Header with icon and emoji */}
                 <div className="flex items-center gap-4 mb-6">
                   <div
-                    className={`w-16 h-16 rounded-2xl ${colors.iconBg} flex items-center justify-center flex-shrink-0 group-hover:rotate-6 transition-transform duration-300`}
+                    className={`w-16 h-16 rounded-2xl ${colors.iconBg} flex items-center justify-center flex-shrink-0 group-hover:rotate-6 transition-transform duration-300 border border-${service.color}-400/30 dark:border-${service.color}-600/30 shadow-md`}
                   >
                     <div className={colors.iconText}>{service.icon}</div>
                   </div>
@@ -223,12 +223,12 @@ export default function ServicesSection() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl sm:text-2xl font-handwriting text-emerald-800 dark:text-emerald-100 mb-4">
+                <h3 className="text-xl sm:text-2xl font-handwriting text-emerald-700 dark:text-emerald-300 mb-4">
                   {service.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-emerald-700 dark:text-emerald-200 font-handwriting leading-relaxed mb-6 flex-grow">
+                <p className="text-emerald-600 dark:text-emerald-200 font-handwriting leading-relaxed mb-6 flex-grow">
                   {service.description}
                 </p>
 
@@ -249,7 +249,7 @@ export default function ServicesSection() {
                 {/* CTA Button */}
                 <Link
                   href="/services"
-                  className={`group/btn inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r ${service.gradient} text-white font-handwriting rounded-2xl transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl`}
+                  className={`group/btn inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r ${service.gradient} text-white font-handwriting rounded-2xl transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl border border-${service.color}-400/50 dark:border-${service.color}-500/50`}
                 >
                   <span>Try {service.title}</span>
                   <svg
@@ -288,17 +288,17 @@ export default function ServicesSection() {
       <MotionWrapper animationType="fade-up" delay={800}>
         <div className="mt-16 text-center">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-3xl p-8 border border-indigo-200 dark:border-indigo-700">
-              <h3 className="text-2xl sm:text-3xl font-handwriting text-emerald-800 dark:text-emerald-200 mb-4">
+            <div className="bg-gradient-to-br from-amber-500/20 via-yellow-500/20 to-amber-600/20 dark:from-amber-700/30 dark:via-amber-800/30 dark:to-amber-900/30 rounded-3xl p-8 border border-amber-400/30 dark:border-amber-600/30 shadow-xl backdrop-blur-sm">
+              <h3 className="text-2xl sm:text-3xl font-handwriting text-emerald-700 dark:text-emerald-300 mb-4">
                 Ready to Start Your Language Journey?
               </h3>
-              <p className="text-lg text-emerald-700 dark:text-emerald-300 font-handwriting mb-6">
+              <p className="text-lg text-emerald-600 dark:text-emerald-200 font-handwriting mb-6">
                 Access all these powerful tools and more with our comprehensive
                 learning platform
               </p>
               <Link
                 href="/services"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white text-lg font-handwriting rounded-2xl transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 text-white text-lg font-handwriting rounded-2xl transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl border border-emerald-400/50 dark:border-emerald-500/50"
               >
                 <span>🎯 Explore All Services</span>
                 <svg

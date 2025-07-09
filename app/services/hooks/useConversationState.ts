@@ -225,6 +225,7 @@ export function useConversationState(selectedLanguage: string) {
         }
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     selectedLanguage,
     state.autoListen,
@@ -313,7 +314,7 @@ export function useConversationState(selectedLanguage: string) {
         if (recognitionIsRunningRef.current) {
           try {
             recognitionRef.current.stop();
-          } catch (e) {
+          } catch {
             // Ignore errors, just making sure it's stopped
           }
           recognitionIsRunningRef.current = false;
@@ -343,7 +344,7 @@ export function useConversationState(selectedLanguage: string) {
       }
     };
 
-    const handleError = (e: Event) => {
+    const handleError = () => {
       console.error("Audio playback error:");
       dispatch({ type: "STOP_SPEAKING" });
 
@@ -409,7 +410,7 @@ export function useConversationState(selectedLanguage: string) {
           conversationIdRef.current = data.conversation.id;
 
           // Convert database messages to conversation format
-          const conversationMessages = data.messages.map((msg: any) => ({
+          const conversationMessages = data.messages.map((msg: { is_user: boolean; content: string }) => ({
             type: msg.is_user ? "user" : "ai",
             text: msg.content,
             ...(msg.is_user ? {} : { audio: undefined }), // AI messages won't have audio from DB
@@ -433,7 +434,7 @@ export function useConversationState(selectedLanguage: string) {
     }
 
     loadExistingConversation();
-  }, [token, selectedLanguage]); // Run when token or language changes
+  }, [token, selectedLanguage, updateConversation]); // Run when token or language changes
 
   // Cleanup object URLs
   useEffect(() => {

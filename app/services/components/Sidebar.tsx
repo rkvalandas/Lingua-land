@@ -52,9 +52,9 @@ export default function Sidebar({
   return (
     <div
       className={`
-        fixed top-0 left-0 h-screen bg-gradient-to-b from-amber-100/95 via-yellow-100/95 to-amber-200/95 
-        dark:bg-gradient-to-b dark:from-amber-900/95 dark:via-yellow-900/95 dark:to-amber-800/95
-        backdrop-blur-lg border-r-2 border-amber-300/80 dark:border-amber-600/80
+        fixed top-0 left-0 h-screen bg-gradient-to-b from-amber-100/95 via-yellow-50/95 to-amber-200/95 
+        dark:bg-gradient-to-b dark:from-amber-800/95 dark:via-yellow-700/95 dark:to-amber-700/95
+        backdrop-blur-lg border-r-2 border-amber-400/90 dark:border-amber-600/90
         transform transition-all duration-300 ease-in-out z-50 flex flex-col
         ${sidebarCollapsed ? "w-16" : "w-80"}
         ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
@@ -71,10 +71,10 @@ export default function Sidebar({
         onClick={onToggleSidebar}
         className={`
           hidden lg:flex absolute top-12 -right-5 z-10 w-10 h-10 
-          bg-gradient-to-br from-amber-200 to-amber-400 dark:from-amber-700 dark:to-amber-600
-          rounded-full hover:from-amber-300 hover:to-amber-500 dark:hover:from-amber-600 dark:hover:to-amber-500
+          bg-gradient-to-br from-amber-200/95 to-amber-300/95 dark:from-amber-600/95 dark:to-amber-700/95
+          rounded-full hover:from-amber-300/95 hover:to-amber-400/95 dark:hover:from-amber-500/95 dark:hover:to-amber-600/95
           transition-all duration-300 items-center justify-center
-          text-emerald-800 dark:text-emerald-100 border-3 border-white/60 dark:border-amber-400/60
+          text-emerald-800 dark:text-emerald-100 border-2 border-amber-400/90 dark:border-amber-500/90
           shadow-xl hover:shadow-2xl hover:scale-110 active:scale-95
           backdrop-blur-sm
         `}
@@ -88,10 +88,10 @@ export default function Sidebar({
       </button>
 
       {/* Sidebar Header */}
-      <div className="flex items-center p-2 border-b-2 border-amber-300/60 dark:border-amber-600/60 flex-shrink-0 bg-gradient-to-r from-transparent via-white/5 to-transparent">
+      <div className="flex items-center p-2 border-b-2 border-amber-400/90 dark:border-amber-600/90 flex-shrink-0 bg-gradient-to-r from-transparent via-white/5 to-transparent">
         {!sidebarCollapsed || window.innerWidth < 1024 ? (
           <div className="flex items-center gap-4 flex-1">
-            <div className="relative w-12 h-12 flex-shrink-0 p-1 bg-gradient-to-br rounded-xl">
+            <div className="relative w-12 h-12 flex-shrink-0 p-1 bg-gradient-to-br from-amber-200/95 to-amber-300/95 dark:from-amber-600/95 dark:to-amber-700/95 rounded-xl border border-amber-400/80 dark:border-amber-600/80 shadow-md">
               <Image
                 src="/icon.png"
                 alt="Lingua Land"
