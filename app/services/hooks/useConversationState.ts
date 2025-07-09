@@ -53,13 +53,16 @@ export function useConversationState(selectedLanguage: string) {
   const [conversation, setConversation] = useState<
     (ConversationMessage | AIMessage)[]
   >([]);
-  const conversationRef = useRef<(ConversationMessage | AIMessage)[]>(conversation);
+  const conversationRef =
+    useRef<(ConversationMessage | AIMessage)[]>(conversation);
 
   // Update both state and ref when conversation changes
   const updateConversation = useCallback(
     (
       updater:
-        | ((prev: (ConversationMessage | AIMessage)[]) => (ConversationMessage | AIMessage)[])
+        | ((
+            prev: (ConversationMessage | AIMessage)[]
+          ) => (ConversationMessage | AIMessage)[])
         | (ConversationMessage | AIMessage)[]
     ) => {
       setConversation((prev) => {
@@ -410,11 +413,13 @@ export function useConversationState(selectedLanguage: string) {
           conversationIdRef.current = data.conversation.id;
 
           // Convert database messages to conversation format
-          const conversationMessages = data.messages.map((msg: { is_user: boolean; content: string }) => ({
-            type: msg.is_user ? "user" : "ai",
-            text: msg.content,
-            ...(msg.is_user ? {} : { audio: undefined }), // AI messages won't have audio from DB
-          }));
+          const conversationMessages = data.messages.map(
+            (msg: { is_user: boolean; content: string }) => ({
+              type: msg.is_user ? "user" : "ai",
+              text: msg.content,
+              ...(msg.is_user ? {} : { audio: undefined }), // AI messages won't have audio from DB
+            })
+          );
 
           updateConversation(conversationMessages);
           console.log(
