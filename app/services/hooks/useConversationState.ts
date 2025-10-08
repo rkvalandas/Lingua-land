@@ -149,10 +149,12 @@ export function useConversationState(selectedLanguage: string) {
                 console.log("[Browser TTS] Restarting recognition");
                 recognitionIsRunningRef.current = true;
                 recognitionRef.current.start();
-              } catch (error: any) {
+              } catch (error) {
                 recognitionIsRunningRef.current = false;
                 // Only log if it's not "already started" error
-                if (!error.message?.includes("already started")) {
+                const errorMessage =
+                  error instanceof Error ? error.message : String(error);
+                if (!errorMessage.includes("already started")) {
                   console.error(
                     "[Browser TTS] Failed to restart recognition:",
                     error
