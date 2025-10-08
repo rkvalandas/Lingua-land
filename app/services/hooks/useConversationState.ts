@@ -103,39 +103,82 @@ export function useConversationState(selectedLanguage: string) {
     (text: string, language: string) => {
       if (!window.speechSynthesis) return;
 
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = getSpeechRecognitionLang(language);
-      utterance.rate = 1.0;
+      utterance.rate = 0.9;
       utterance.pitch = 1.0;
+      utterance.volume = 1.0;
 
       utterance.onstart = () => {
+        console.log("[Browser TTS] Started");
         dispatch({ type: "START_SPEAKING" });
-        if (recognitionRef.current && state.isListening) {
-          recognitionRef.current.stop();
+
+        // Stop speech recognition while TTS is speaking
+        if (
+          recognitionRef.current &&
+          (state.isListening || recognitionIsRunningRef.current)
+        ) {
+          try {
+            recognitionRef.current.stop();
+            recognitionIsRunningRef.current = false;
+          } catch (e) {
+            console.error("[Browser TTS] Error stopping recognition:", e);
+          }
         }
       };
 
       utterance.onend = () => {
+        console.log("[Browser TTS] Ended");
         dispatch({ type: "STOP_SPEAKING" });
+
+        // Restart recognition in auto-listen mode after a delay
         if (state.autoListen && recognitionRef.current && !state.isProcessing) {
           setTimeout(() => {
-            try {
-              recognitionRef.current?.start();
-            } catch (error) {
-              console.error("Failed to restart recognition after TTS:", error);
+            // Double-check conditions before restarting
+            if (
+              recognitionRef.current &&
+              !recognitionIsRunningRef.current &&
+              !state.isProcessing &&
+              !state.isSpeaking &&
+              state.autoListen
+            ) {
+              try {
+                console.log("[Browser TTS] Restarting recognition");
+                recognitionIsRunningRef.current = true;
+                recognitionRef.current.start();
+              } catch (error: any) {
+                recognitionIsRunningRef.current = false;
+                // Only log if it's not "already started" error
+                if (!error.message?.includes("already started")) {
+                  console.error(
+                    "[Browser TTS] Failed to restart recognition:",
+                    error
+                  );
+                }
+              }
             }
-          }, 500);
+          }, 1000);
         }
       };
 
       utterance.onerror = (error) => {
-        console.error("Browser TTS error:", error);
+        console.error("[Browser TTS] Error:", error);
         dispatch({ type: "STOP_SPEAKING" });
       };
 
+      console.log("[Browser TTS] Speaking...");
       window.speechSynthesis.speak(utterance);
     },
-    [state.isListening, state.autoListen, state.isProcessing, dispatch]
+    [
+      state.isListening,
+      state.autoListen,
+      state.isProcessing,
+      state.isSpeaking,
+      dispatch,
+    ]
   );
 
   // Initialize speech recognition
@@ -507,7 +550,7 @@ export function useConversationState(selectedLanguage: string) {
 
         // 2. Request TTS
         try {
-          console.log("Requesting TTS for AI response");
+          console.log("[TTS] Requesting audio for AI response");
 
           const ttsResponse = await fetch(`${API_BASE_URL}/api/tts`, {
             method: "POST",
@@ -521,15 +564,21 @@ export function useConversationState(selectedLanguage: string) {
             }),
           });
 
-          if (!ttsResponse.ok)
-            throw new Error(`TTS API returned ${ttsResponse.status}`);
-
-          // Parse the response with audio data
+          // Parse the response
           const audioData = await ttsResponse.json();
 
-          if (!audioData.audioData) throw new Error("No audio data received");
+          // Check if server TTS failed and we should use fallback
+          if (
+            !audioData.success ||
+            audioData.fallback ||
+            !audioData.audioData
+          ) {
+            console.warn("[TTS] Server TTS unavailable, using browser TTS");
+            browserTTS(data.aiResponse, selectedLanguage);
+            return;
+          }
 
-          console.log("Received audio data URI");
+          console.log("[TTS] Received audio data from server");
 
           // Store the data URI for replay - using a memoized function
           setConversation((prev) => {
