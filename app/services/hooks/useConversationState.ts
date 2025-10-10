@@ -97,6 +97,8 @@ export function useConversationState(selectedLanguage: string) {
   const conversationIdRef = useRef<number | null>(null);
   const recognitionIsRunningRef = useRef(false);
   const conversationContainerRef = useRef<HTMLDivElement>(null);
+  const lastProcessedTranscriptRef = useRef<string>("");
+  const processingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Browser's built-in TTS fallback
   const browserTTS = useCallback(
@@ -247,23 +249,56 @@ export function useConversationState(selectedLanguage: string) {
         }
       }
 
-      dispatch({
-        type: "SET_TRANSCRIPT",
-        text: finalTranscript || interimTranscript,
-      });
+      // Update display with interim or final transcript
+      const displayText = finalTranscript || interimTranscript;
+      if (displayText) {
+        dispatch({
+          type: "SET_TRANSCRIPT",
+          text: displayText,
+        });
+      }
 
-      // Auto-process final transcript in auto mode
+      // Only process when we have a substantial final transcript
       if (finalTranscript && state.autoListen) {
+        const trimmedFinal = finalTranscript.trim();
+
+        // Ignore very short final transcripts (likely false positives)
+        if (trimmedFinal.length < 2) {
+          console.log("Ignoring short final transcript:", trimmedFinal);
+          return;
+        }
+
+        // Clear any pending processing timeout
+        if (processingTimeoutRef.current) {
+          clearTimeout(processingTimeoutRef.current);
+        }
+
+        console.log("Received final transcript:", trimmedFinal);
         recognition.stop();
-        processTranscript(finalTranscript);
-        dispatch({ type: "RESET_TRANSCRIPT" });
+
+        // Use a small delay to ensure we capture the complete utterance
+        // This prevents mobile from sending partial results
+        processingTimeoutRef.current = setTimeout(() => {
+          processTranscript(trimmedFinal);
+          dispatch({ type: "RESET_TRANSCRIPT" });
+          processingTimeoutRef.current = null;
+        }, 300);
       }
     };
 
     recognitionRef.current = recognition;
 
+    // Reset duplicate detection when language changes
+    lastProcessedTranscriptRef.current = "";
+
     // Cleanup on unmount
     return () => {
+      // Clear any pending processing timeout
+      if (processingTimeoutRef.current) {
+        clearTimeout(processingTimeoutRef.current);
+        processingTimeoutRef.current = null;
+      }
+
       if (recognition) {
         try {
           recognition.stop();
@@ -515,7 +550,26 @@ export function useConversationState(selectedLanguage: string) {
   // Process transcript and get AI response
   const processTranscript = useCallback(
     async (text: string): Promise<void> => {
-      if (!text.trim() || !token) return;
+      const trimmedText = text.trim();
+      if (!trimmedText || !token) return;
+
+      // Prevent duplicate processing of the same transcript
+      if (lastProcessedTranscriptRef.current === trimmedText) {
+        console.log("Ignoring duplicate transcript:", trimmedText);
+        return;
+      }
+
+      // Check if this is a prefix of the last processed (mobile sends partial then full)
+      if (
+        lastProcessedTranscriptRef.current.startsWith(trimmedText) &&
+        lastProcessedTranscriptRef.current.length > trimmedText.length
+      ) {
+        console.log("Ignoring partial transcript:", trimmedText);
+        return;
+      }
+
+      console.log("Processing new transcript:", trimmedText);
+      lastProcessedTranscriptRef.current = trimmedText;
 
       try {
         dispatch({ type: "START_PROCESSING" });
@@ -617,8 +671,15 @@ export function useConversationState(selectedLanguage: string) {
         }
       } catch (error) {
         console.error("Error processing transcript:", error);
+        // Reset on error so user can retry
+        lastProcessedTranscriptRef.current = "";
       } finally {
         dispatch({ type: "STOP_PROCESSING" });
+
+        // Reset after 2 seconds to allow the same phrase again
+        setTimeout(() => {
+          lastProcessedTranscriptRef.current = "";
+        }, 2000);
       }
     },
     [token, selectedLanguage, dispatch, browserTTS]
